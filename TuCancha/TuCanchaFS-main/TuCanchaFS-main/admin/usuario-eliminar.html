@@ -1,3 +1,4 @@
+ HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -34,3 +35,41 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Eliminar Usuario</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo">Mi Panel</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="productos.html">Productos</a>
+      <a href="usuarios.html" class="active">Usuarios</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Eliminar Usuario</h2>
+    <p>¿Seguro que quieres eliminar al usuario <b>Juan Pérez</b>?</p>
+    <button onclick="confirmarEliminar()">Sí, eliminar</button>
+    <a href="usuarios.html" class="btn">Cancelar</a>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Panel de Administración</p>
+  </footer>
+
+  <script>
+    function confirmarEliminar() {
+      alert("Usuario eliminado!");
+      window.location.href = "usuarios.html";
+    }
+  </script>
+</body>
+</html>
+
