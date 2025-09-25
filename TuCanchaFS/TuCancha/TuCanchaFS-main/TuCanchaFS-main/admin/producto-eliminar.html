@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Eliminar Producto</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo">Mi Panel</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="productos.html" class="active">Productos</a>
+      <a href="usuarios.html">Usuarios</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Eliminar Producto</h2>
+    <p>¿Seguro que quieres eliminar el producto <b>Laptop Dell</b>?</p>
+    <button onclick="confirmarEliminar()">Sí, eliminar</button>
+    <a href="productos.html" class="btn">Cancelar</a>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Panel de Administración</p>
+  </footer>
+
+  <script>
+    function confirmarEliminar() {
+      alert("Producto eliminado!");
+      window.location.href = "productos.html";
+    }
+  </script>
+</body>
+</html>
