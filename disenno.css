@@ -47,12 +47,12 @@ button:hover {
 header {
     background-color: seagreen;
     color: white;
-    padding: 10px 0;
+    padding: 20px 0;
     text-align: center;
 }
 header .titulo {
     margin : 0;
-    padding: 25px 30px;
+    padding: 20px 10px;
     font-weight: bold;
     font-size: 1em;
 } 
@@ -62,7 +62,7 @@ header .container{
     align-items: center;
 }
 header a {
-    padding: 5px 12px;
+    padding: 0 12px;
     color : white;
     font-weight: bold;
     text-decoration: none;
@@ -79,7 +79,7 @@ nav {
     max-width: 1200px;
 }
 nav a {
-    margin: 0 10px;
+    margin: 1 10px;
 }
 
 main {
@@ -398,4 +398,79 @@ header nav a {
 .login a {
     color: white;
     text-decoration: none;
+}
+
+/*inicio register
+---------------------------------*/
+
+#register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.form-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: rgb(30, 30, 30);
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+}
+
+.form-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+.form-card label {
+    font-weight: bold;
+    color: white;
+}
+
+.form-card input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.form-card button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#register-page .container p {
+    margin-top: 20px;
+}
+/*fin register
+---------------------------------*/
+/* Carrito flotante */
+.floating-cart {
+    position: fixed; /* Esto lo hace flotar */
+    bottom: 20px;    /* Lo coloca a 20px del borde inferior de la ventana */
+    right: 20px;     /* Lo coloca a 20px del borde derecho de la ventana */
+    z-index: 1000;   /* Asegura que esté por encima de otros elementos */
+    background-color: seagreen; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    padding: 15px 25px; /* Relleno interno para el botón */
+    border-radius: 50px; /* Borde redondeado para un aspecto de píldora o círculo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle un efecto 3D */
+    transition: transform 0.3s ease; /* Efecto de transición suave al pasar el mouse */
+}
+
+.floating-cart:hover {
+    transform: scale(1.1); /* Agranda ligeramente el botón al pasar el mouse */
+}
+
+.floating-cart a {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    color: white; /* Asegura que el texto del enlace sea blanco */
+    font-weight: bold;
 }
