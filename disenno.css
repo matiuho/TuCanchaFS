@@ -9,7 +9,7 @@ body {
     color: #333;
 }
 h1 {
-    font-size: 3.5em;
+    font-size: 2.90em;
 }
 
 h2 {
@@ -53,4 +53,133 @@ header a {
 header a:hover {
     background-color: #45a049;
     border-radius: 5px;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+nav a {
+    margin: 0 10px;
+}
+
+main {
+    padding: 20px;
+}
+section {
+    margin-bottom: 40px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+#inicio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    height: 90vh;
+    color: white;
+    background-image: linear-gradient(0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/canchabienvenidop.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+#inicio h2 {
+    font-size: 2.7em;
+    margin-bottom: 20px;
+}
+#inicio h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+#nosotros {
+    background-image: linear-gradient(0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/quienes.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+}
+#nosotros .container {
+    color: white;
+    text-align: center;
+    padding: 200px 12px;
+}
+#canchas{
+    background-color: rgb(30, 30, 30);
+    color: white;
+    text-align: center;
+    
+}
+#canchas .container{
+    padding: 100px 12px;
+}
+#canchas h2{
+    margin-top: 0;
+    font-size: 3em;
+}
+#canchas .carta{
+    background-size: cover;
+    background-position: center center;
+    padding: 50px;
+    margin: 20px;
+    border-radius: 15px;
+}
+.carta:first-child{
+    background-image: linear-gradient( 0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/plazanorte.jpg');
+    
+}
+.carta:nth-child(2){
+    background-image: linear-gradient( 0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/cancha2.jpg');
+}
+.carta:nth-child(3){
+    background-image: linear-gradient( 0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/canchas3.jpg');
+}
+#canchas2{
+    background-color: rgb(30, 30, 30);
+    color: white;
+    text-align: center;
+    
+}
+#canchas2 .container{
+    padding: 100px 12px;
+}
+#canchas2 h2{
+    margin-top: 0;
+    font-size: 3em;
+}
+#canchas2 .cartas{
+    background-size: cover;
+    background-position: center center;
+    padding: 50px;
+    margin: 20px;
+    border-radius: 15px;
+}
+.cartas:first-child{
+    background-image: linear-gradient( 0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/cancha4.jpg');
+    
+}
+.cartas:nth-child(2){
+    background-image: linear-gradient( 0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/cancha5.jpg');
+}
+.cartas:nth-child(3){
+    background-image: linear-gradient( 0deg,
+    rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('img/canchas6.jpg');
 }
