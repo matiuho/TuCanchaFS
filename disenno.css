@@ -54,7 +54,7 @@ header .titulo {
     margin : 0;
     padding: 25px 30px;
     font-weight: bold;
-    font-size: 1.65em;
+    font-size: 1em;
 } 
 header .container{
     display: flex;
@@ -138,8 +138,9 @@ section {
     padding: 100px 12px;
 }
 #canchas h2{
-    margin-top: 0;
-    font-size: 3em;
+    margin-top: 20px;
+    font-size: 2em;
+    
 }
 #canchas .carta{
     background-size: cover;
@@ -173,10 +174,7 @@ section {
 #canchas2 .container{
     padding: 100px 12px;
 }
-#canchas2 h2{
-    margin-top: 0;
-    font-size: 3em;
-}
+
 #canchas2 .cartas{
     background-size: cover;
     background-position: center center;
@@ -230,15 +228,12 @@ footer .container{
     justify-content: center;
 }
 @media (min-width: 720px){
-    haeder {
-        position: fixed;
-        width: 100%;
-    }
+
     header .container{
         flex-direction: row;
         justify-content: space-between;        
     }
-    header .nav{
+    header nav{
         flex-direction: row;
         padding-bottom: 0;
         padding-right: 20px;
@@ -260,21 +255,25 @@ footer .container{
     #canchas .programas{
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
+        
     }
     #canchas .container{
-        display: flex;
         justify-content: center;
+        
     }
+    
     #canchas h3{
         margin-top: 3%;
     }
     #canchas .carta{
-        padding: 15px;
-        margin-bottom: 30px;
+        padding: 70px;
+        margin-bottom: 20px;
     }
     #canchas2 .programas{
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
     }
     #canchas2 .container{
         display: flex;
@@ -284,7 +283,119 @@ footer .container{
         margin-top: 3%;
     }
     #canchas2 .cartas{
-        padding: 15px;
-        margin-bottom: 30px;
+        padding: 70px;
+        margin-bottom: 20px;
     }
+}
+/*login y register*/
+
+.login-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.login-section {
+    padding: 40px;
+    background-color: rgb(30, 30, 30);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+}
+
+.login-container h2 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 1.2em;
+    color: white;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    background-color: seagreen;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: darkgreen;
+}
+
+.register-link {
+    margin-top: 20px;
+    font-size: 1em;
+    color: #777;
+}
+
+.register-link a {
+    color: seagreen;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header .titulo h1 {
+    margin: 0;
+    padding: 0;
+}
+
+header nav a {
+    padding: 5px 12px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.carrito a {
+    color: white;
+    text-decoration: none;
+}
+
+.login a {
+    color: white;
+    text-decoration: none;
 }
