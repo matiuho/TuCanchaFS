@@ -4,9 +4,10 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+
+}
+html {
+    scroll-behavior: smooth;
 }
 h1 {
     font-size: 2.90em;
@@ -26,6 +27,22 @@ p {
 .container {
     max-width: 1400px;
     margin: auto;
+}
+button {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    color: white;
+    background-color: seagreen;
+    cursor: pointer;
+
+}
+button:hover {
+    background-color: darkgreen;;
 }
 header {
     background-color: seagreen;
@@ -182,4 +199,92 @@ section {
     background-image: linear-gradient( 0deg,
     rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url('img/canchas6.jpg');
+}
+
+#noticias {
+    background-color: seagreen;
+    color: white;
+    text-align: center;
+}
+#noticias .container{
+    padding: 100px 12px;
+}
+#noticias h2{
+    margin-top: 0;
+    font-size: 3em;
+}
+#noticias .container{
+    background-size: cover;
+    background-position: center center;
+    padding: 50px;
+    margin: 20px;
+    border-radius: 15px;
+}
+footer {
+    background-color: rgb(100, 100, 100);
+}
+footer .container{
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+@media (min-width: 720px){
+    haeder {
+        position: fixed;
+        width: 100%;
+    }
+    header .container{
+        flex-direction: row;
+        justify-content: space-between;        
+    }
+    header .nav{
+        flex-direction: row;
+        padding-bottom: 0;
+        padding-right: 20px;
+
+    }
+    header h1{
+        font-size: 5em;
+    }
+    #inicio .container{
+        display: flex;
+        justify-content: center;
+    }
+    #inicio h2{
+        margin-top: 0px;
+    }
+    #inicio h3{
+        margin-top: 0px;
+    }
+    #canchas .programas{
+        display: flex;
+        justify-content: center;
+    }
+    #canchas .container{
+        display: flex;
+        justify-content: center;
+    }
+    #canchas h3{
+        margin-top: 3%;
+    }
+    #canchas .carta{
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+    #canchas2 .programas{
+        display: flex;
+        justify-content: center;
+    }
+    #canchas2 .container{
+        display: flex;
+        justify-content: center;
+    }
+    #canchas2 h3{
+        margin-top: 3%;
+    }
+    #canchas2 .cartas{
+        padding: 15px;
+        margin-bottom: 30px;
+    }
 }
