@@ -135,7 +135,7 @@ section {
 #nosotros {
     background-image: linear-gradient(0deg,
     rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('../img/quienes.jpg');
+    url('../img/canchita.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
@@ -572,6 +572,7 @@ header nav a {
             line-height: 1.6;
             margin-bottom: 20px;
         }
+        .blog-detail 
         .back-button {
             display: inline-block;
             padding: 10px 20px;
