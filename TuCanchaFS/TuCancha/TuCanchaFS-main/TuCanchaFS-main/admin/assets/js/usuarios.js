@@ -10,7 +10,7 @@ const usuarios = [
 // Mostrar usuarios en la tabla
 const tbody = document.querySelector("#tablaUsuarios tbody");
 
-usuarios.forEach(u => {
+usuarios.forEach(u =>{
     const tr = document.createElement("tr");
     tr.innerHTML = `
     <td>${u.id}</td>
