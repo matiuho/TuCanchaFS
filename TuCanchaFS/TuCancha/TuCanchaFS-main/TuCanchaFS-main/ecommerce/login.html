@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://127.0.0.1:5501;">
     <title>Iniciar Sesión - Tu Cancha!</title>
     <link rel="stylesheet" href="assets/css/disenno.css">
+    <script src="assets/js/menu.js"></script>
+    <script src="assets/js/validar.js"></script>
 </head>
 
 <body>
@@ -26,7 +28,7 @@
                         <label for="password">Contraseña:</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-                    <button type="button" class="login-button" id="btnLogin">Entrar</button> 
+                    <button type="button" class="login-button" onclick="validaAdmin()">Entrar</button>
                     <p class="register-link">¿No tienes cuenta? <a href="register.html">Regístrate aquí</a></p>
                 </form>
             </div>
@@ -39,8 +41,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/menu.js"></script>
-    <script src="assets/js/validar.js"></script>
 </body>
 
 </html>
