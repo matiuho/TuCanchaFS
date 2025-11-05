@@ -35,13 +35,6 @@ export const HomePage: FC = () => {
             <header style={{ marginBottom: 18 }}>
                 <h1 style={{ textAlign: 'center', margin: 0 }}>Encuentra la cancha perfecta</h1>
                 <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: 8 }}>Reserva canchas cerca de ti en segundos — filtra por tipo, precio y capacidad.</p>
-
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 14 }}>
-                    <button className="btn small" onClick={() => setSearchTerm('fútbol')}>Fútbol</button>
-                    <button className="btn small" onClick={() => setSearchTerm('mini')}>Mini fútbol</button>
-                    <button className="btn small" onClick={() => setSearchTerm('padel')}>Padel</button>
-                    <button className="btn small" onClick={() => setSearchTerm('tenis')}>Tenis</button>
-                </div>
             </header>
 
             {isLoading ? (

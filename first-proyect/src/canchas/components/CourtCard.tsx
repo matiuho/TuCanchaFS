@@ -1,10 +1,10 @@
 // ===================================
 // src/canchas/components/CourtCard.tsx
 // ===================================
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CanchaProps } from '../../interfaces/cancha.interface';
-import { useCart } from '../../contexts/CartContexts'; 
+import { BookingModal } from './BookingModal';
 
 interface Props {
     cancha: CanchaProps; // Demuestra el uso de PROPIEDADES
@@ -12,10 +12,10 @@ interface Props {
 
 export const CourtCard = memo(({ cancha }: Props) => {
     const navigate = useNavigate();
-    const { addToCart } = useCart(); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleViewDetails = () => {
-        navigate('/detalle-cancha', { state: { cancha: cancha }});
+        navigate(`/cancha/${cancha.id}`);
     }
 
     return (
@@ -31,12 +31,16 @@ export const CourtCard = memo(({ cancha }: Props) => {
                     <div className="card-price">${cancha.precioHora.toLocaleString('es-CL')} / hr</div>
                     <div>
                         <button
-                            onClick={(e) => { e.stopPropagation(); addToCart(cancha); }}
+                            onClick={(e) => {
+                                e.stopPropagation(); // Evita que se active el click de la tarjeta
+                                setIsModalOpen(true);
+                            }}
                             className="btn"
                         >Agregar</button>
                     </div>
                 </div>
             </div>
+            <BookingModal cancha={cancha} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>
     );
 });

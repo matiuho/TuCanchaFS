@@ -11,14 +11,14 @@ const AuthStatus: FC = () => {
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
       <div style={{ color: 'white' }}>Hola, {user.email}</div>
       <button className="btn small" onClick={logout}>Salir</button>
-      <ShoppingCartIcon />
+      <Link to="/cart"><ShoppingCartIcon /></Link>
     </div>
   );
   return (
     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
       <Link to="/login" className="topbar-btn small">Login</Link>
       <Link to="/register" className="topbar-btn secondary small">Register</Link>
-      <ShoppingCartIcon />
+      <Link to="/cart"><ShoppingCartIcon /></Link>
     </div>
   );
 };
@@ -35,6 +35,7 @@ const App: FC = () => {
               <nav className="topbar-nav">
                 <Link to="/">Inicio</Link>
                 <Link to="/">Canchas</Link>
+                <Link to="/blog">Blog</Link>
                 <Link to="/about">Quienes somos</Link>
                 <Link to="/contact">Contacto</Link>
               </nav>

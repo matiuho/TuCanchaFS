@@ -6,24 +6,24 @@ import { useCart } from '../../contexts/CartContexts';
 import type { FC } from 'react';
 
 export const ShoppingCartIcon: FC = () => {
-  const { totalItems } = useCart(); // Accede al estado global para el conteo
+  const { totalItems } = useCart();
 
   return (
-    <Link to="/carrito" style={{ textDecoration: 'none', color: 'inherit' }}> 
+    <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
       <div style={{ position: 'relative', cursor: 'pointer', fontSize: '24px', color: 'white' }}>
         🛒
         {totalItems > 0 && (
-          <span 
+          <span
             style={{
-              position: 'absolute', top: '-10px', right: '-10px', 
+              position: 'absolute', top: '-8px', right: '-10px',
               backgroundColor: 'white', color: 'var(--topbar)', borderRadius: '50%',
-              padding: '2px 7px', fontSize: '12px', fontWeight: 'bold',
+              padding: '1px 6px', fontSize: '11px', fontWeight: 'bold',
             }}
           >
             {totalItems}
           </span>
         )}
       </div>
-    </Link> 
+    </Link>
   );
 };
