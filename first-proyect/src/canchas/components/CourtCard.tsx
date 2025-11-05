@@ -19,28 +19,30 @@ export const CourtCard = memo(({ cancha }: Props) => {
     }
 
     return (
-        <div className="gif-card" onClick={handleViewDetails} style={{ cursor: 'pointer' }}>
-            <div className="card-media">
-                <img src={cancha.imagenUrl || 'placeholder.jpg'} alt={cancha.nombre} />
-                <div className="card-badge">{cancha.tipo}</div>
-            </div>
-            <div className="card-body">
-                <h3 className="card-title">{cancha.nombre}</h3>
-                <p className="card-meta">Capacidad: {cancha.capacidad} pers</p>
-                <div className="card-footer" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div className="card-price">${cancha.precioHora.toLocaleString('es-CL')} / hr</div>
-                    <div>
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation(); // Evita que se active el click de la tarjeta
-                                setIsModalOpen(true);
-                            }}
-                            className="btn"
-                        >Agregar</button>
+        <>
+            <div className="gif-card" onClick={handleViewDetails} style={{ cursor: 'pointer' }}>
+                <div className="card-media">
+                    <img src={cancha.imagenUrl || 'placeholder.jpg'} alt={cancha.nombre} />
+                    <div className="card-badge">{cancha.tipo}</div>
+                </div>
+                <div className="card-body">
+                    <h3 className="card-title">{cancha.nombre}</h3>
+                    <p className="card-meta">Capacidad: {cancha.capacidad} pers</p>
+                    <div className="card-footer" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div className="card-price">${cancha.precioHora.toLocaleString('es-CL')} / hr</div>
+                        <div>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Evita que se active el click de la tarjeta
+                                    setIsModalOpen(true); // Abre el modal
+                                }}
+                                className="btn"
+                            >Agregar</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <BookingModal cancha={cancha} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-        </div>
+        </>
     );
 });

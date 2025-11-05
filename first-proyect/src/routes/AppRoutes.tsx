@@ -8,6 +8,8 @@ import { CartPage } from '../pages/CartPage';
 import { CanchaDetail } from '../pages/CanchaDetail';
 import { BlogPage } from '../pages/BlogPage';
 import { BlogDetail } from '../pages/BlogDetail';
+import { CategoryPage } from '../pages/CategoryPage';
+import { PaymentPage } from '../pages/PaymentPage';
 import { ConfirmationPage } from '../pages/ConfirmationPage';
 
 export const AppRoutes = () => {
@@ -22,6 +24,8 @@ export const AppRoutes = () => {
       <Route path="/cancha/:id" element={<CanchaDetail />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/blog/:id" element={<BlogDetail />} />
+      <Route path="/category/:categoryName" element={<CategoryPage />} />
+      <Route path="/payment" element={<PaymentPage />} />
       <Route path="/confirmation" element={<ConfirmationPage />} />
     </Routes>
   );

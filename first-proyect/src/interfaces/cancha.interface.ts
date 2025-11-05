@@ -5,7 +5,7 @@
 export interface CanchaProps {
     id: number;
     nombre: string;
-    tipo: 'Fútbol' | 'Tenis' | 'Básquet';
+    tipo: 'Fútbol' | 'Futsal';
     precioHora: number;
     enOferta?: boolean;
     precioOferta?: number;

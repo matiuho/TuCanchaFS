@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContexts';
 
-export const CartPage: FC = () => {
-  const { carrito, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, subtotal } = useCart();
+export const CartPage: FC = () => { // Renombrado de addReservationToCart a addToCart
+  const { carrito, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, subtotal } = useCart(); // Ahora usa addToCart
   const navigate = useNavigate();
 
   // --- Lógica de descuentos ---
@@ -22,7 +22,7 @@ export const CartPage: FC = () => {
 
   const handleCheckout = () => {
     alert('Proceso de checkout simulado — gracias!');
-    clearCart();
+    //clearCart();
     navigate('/confirmation');
   };
 
@@ -91,7 +91,7 @@ export const CartPage: FC = () => {
         </div>
 
         <div className="cart-actions" style={{ marginTop: 12 }}>
-          <button className="btn" onClick={handleCheckout} disabled={carrito.length === 0}>Proceder al pago</button>
+          <button className="btn" onClick={() => navigate('/payment')} disabled={carrito.length === 0}>Proceder al pago</button>
           <button className="btn secondary" onClick={() => clearCart()}>Vaciar carrito</button>
         </div>
       </div>

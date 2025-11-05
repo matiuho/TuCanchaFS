@@ -13,6 +13,7 @@ export const LoginPage: FC = () => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+
     // Validaciones básicas
     const trimmed = email.trim();
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

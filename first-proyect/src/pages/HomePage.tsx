@@ -2,6 +2,7 @@
 // src/pages/HomePage.tsx (Controlador Principal)
 // ===================================
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import type { FC } from 'react';
 import { CourtCard } from '../canchas/components/CourtCard';
 import { mockCanchas } from '../mock-data/canchas.mock';
@@ -10,7 +11,10 @@ import type { CanchaProps } from '../interfaces/cancha.interface';
 const getCanchasSimulated = (query: string = ''): CanchaProps[] => {
     if (!query) return mockCanchas;
     const lowerQuery = query.toLowerCase();
-    return mockCanchas.filter(c => c.nombre.toLowerCase().includes(lowerQuery));
+    return mockCanchas.filter(c => 
+        c.nombre.toLowerCase().includes(lowerQuery) || 
+        c.tipo.toLowerCase().includes(lowerQuery)
+    );
 }
 
 
@@ -36,6 +40,14 @@ export const HomePage: FC = () => {
                 <h1 style={{ textAlign: 'center', margin: 0 }}>Encuentra la cancha perfecta</h1>
                 <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: 8 }}>Reserva canchas cerca de ti en segundos — filtra por tipo, precio y capacidad.</p>
             </header>
+
+            <section style={{ marginTop: 24 }}>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', margin: '16px 0' }}>
+                    <Link to="/category/futsal" className="btn">
+                        🥅 Futsal
+                    </Link>
+                </div>
+            </section>
 
             {isLoading ? (
                 <div className="content-center" style={{ marginTop: '50px', textAlign: 'center' }}>Cargando canchas...</div>
