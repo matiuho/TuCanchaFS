@@ -1,13 +1,16 @@
 // ===================================
 // src/contexts/CartContexts.tsx
 // ===================================
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { CanchaProps } from '../interfaces/cancha.interface';
+import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import type { CanchaProps } from '../interfaces/cancha.interface';
 
 interface CartContextType {
   carrito: CanchaProps[];
   addToCart: (cancha: CanchaProps) => void;
+  removeFromCart: (canchaId: number) => void;
+  clearCart: () => void;
   totalItems: number;
+  total: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -24,10 +27,26 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCarrito(prev => [...prev, cancha]);
   };
 
+  const removeFromCart = (canchaId: number) => {
+    setCarrito(prev => prev.filter(item => item.id !== canchaId));
+  };
+
+  const clearCart = () => {
+    setCarrito([]);
+  };
+
   const totalItems = carrito.length;
+  const total = carrito.reduce((sum, item) => sum + item.precioHora, 0);
 
   return (
-    <CartContext.Provider value={{ carrito, addToCart, totalItems }}>
+    <CartContext.Provider value={{ 
+      carrito, 
+      addToCart, 
+      removeFromCart, 
+      clearCart, 
+      totalItems, 
+      total 
+    }}>
       {children}
     </CartContext.Provider>
   );
