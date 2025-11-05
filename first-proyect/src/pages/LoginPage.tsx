@@ -10,7 +10,7 @@ export const LoginPage: FC = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -18,15 +18,18 @@ export const LoginPage: FC = () => {
     const trimmed = email.trim();
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRe.test(trimmed)) return setError('Introduce una dirección de correo válida.');
-    if (password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres.');
-    if (!/[A-Z]/.test(password)) return setError('La contraseña debe contener al menos una letra mayúscula.');
 
     const ok = auth.login(trimmed, password);
     if (ok) {
-      navigate('/');
+      if (auth.isAdmin()) {
+        // Si es admin, redirige a la página de administración (boletas)
+        navigate('/admin/boletas');
+      } else {
+        // Si es usuario normal, redirige a la página principal
+        navigate('/');
+      }
     } else {
-      // si no existe el usuario, sugerir registro
-      setError('Usuario no encontrado. ¿Quieres registrarte?');
+      setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
     }
   };
 
@@ -55,7 +58,10 @@ export const LoginPage: FC = () => {
             <Link to="/register" className="btn secondary">Register</Link>
           </div>
         </form>
-        <p style={{ marginTop: 12, color: 'var(--muted)' }}>Demo user: demo@tucancha.test / demo1234</p>
+        <div style={{ marginTop: 12, color: 'var(--muted)' }}>
+          <p>Demo user: demo@tucancha.test / demo1234</p>
+          <p>Admin user: admin@tucancha.com / admin123</p>
+        </div>
       </div>
     </div>
   );

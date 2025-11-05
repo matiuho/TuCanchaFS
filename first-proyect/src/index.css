@@ -22,9 +22,11 @@ a { color: inherit; text-decoration: none; }
 /* basic responsive grid referenced by components */
 .gifs-container {
   display: grid;
-  /* slightly smaller cards for denser layout */
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  /* Two rows of three columns */
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .gif-card { background: var(--card-bg); padding: 14px; border-radius: 12px; box-shadow: 0 6px 20px rgba(9,30,15,0.06); border: 1px solid rgba(0,0,0,0.04); }
@@ -37,6 +39,46 @@ a { color: inherit; text-decoration: none; }
 .topbar-nav a{ color:rgba(255,255,255,0.95); font-weight:600; text-decoration:none }
 .topbar-nav a:hover{ text-decoration:underline }
 .topbar-inner{ display:flex; align-items:center; gap:16px }
+
+/* Estilos del Dashboard */
+.admin-dashboard {
+  padding: 20px;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--topbar);
+  margin: 10px 0;
+}
+
+.quick-actions {
+  margin-top: 30px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.admin-orders {
+  padding: 20px;
+}
 
 .detail-page{ display:flex; gap:24px; align-items:flex-start; padding:20px; }
 .detail-image{ max-width:420px; border-radius:12px; box-shadow:0 8px 30px rgba(11,63,43,0.06); }
@@ -116,6 +158,198 @@ a { color: inherit; text-decoration: none; }
   .mobile-cart-btn{ display:inline-block }
 }
 
+/* Estilos para la página de administración */
+.admin-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+}
+
+.admin-form-section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.courts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.court-item {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.court-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.court-info {
+  padding: 15px;
+}
+
+.court-actions {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid #eee;
+}
+
+/* Estilos del formulario */
+.court-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+textarea.form-input {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilos del Layout Administrativo */
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-header {
+  background: var(--topbar);
+  color: white;
+  padding: 0.5rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-nav {
+  width: 100%;
+}
+
+.admin-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-menu li {
+  position: relative;
+}
+
+.admin-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+  display: block;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.admin-menu a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.profile-menu {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Estilos para el perfil */
+.profile-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.profile-info {
+  margin-top: 1rem;
+}
+
+.admin-main {
+  padding: 20px;
+  background: var(--primary-bg);
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .admin-nav ul {
+    display: flex;
+    gap: 10px;
+  }
+}
+
 .mobile-cart-btn{ display:none }
 
 /* Search input modern look */
@@ -125,5 +359,14 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 720px){
   .detail-page{ flex-direction:column; }
   .gif-card img{ border-radius:8px }
+  .gifs-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px){
+  .gifs-container {
+    grid-template-columns: 1fr;
+  }
 }
 

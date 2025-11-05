@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from '../pages/HomePage';
 import { AboutPage } from '../pages/AboutPage';
 import { ContactPage } from '../pages/ContactPage';
@@ -11,11 +11,19 @@ import { BlogDetail } from '../pages/BlogDetail';
 import { CategoryPage } from '../pages/CategoryPage';
 import { PaymentPage } from '../pages/PaymentPage';
 import { ConfirmationPage } from '../pages/ConfirmationPage';
+import { AdminRoutes } from '../pages/AdminRoutes';
+import { useAuth } from '../contexts/AuthContext';
+
+// Componente para manejar la redirección inicial
+const InitialRedirect = () => {
+  const { isAdmin } = useAuth();
+  return isAdmin() ? <Navigate to="/admin/boletas" /> : <HomePage />;
+};
 
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<InitialRedirect />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/login" element={<LoginPage />} />
@@ -27,6 +35,7 @@ export const AppRoutes = () => {
       <Route path="/category/:categoryName" element={<CategoryPage />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/confirmation" element={<ConfirmationPage />} />
+      <Route path="/admin/*" element={<AdminRoutes />} />
     </Routes>
   );
 };

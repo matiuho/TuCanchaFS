@@ -2,27 +2,52 @@
 // src/sharedComponents/components/SearchBar.tsx
 // ===================================
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { FC, ChangeEvent } from 'react';
 
 interface Props {
-    placeHolder: string;
-    // La propiedad onQuery es la que el padre (HomePageController) usará
+    placeHolder?: string;
     onQuery: (query: string) => void;
 }
 
-// Requisito: Componente funcional que recibe PROPIEDADES (placeHolder, onQuery)
-export const SearchBar: FC<Props> = ({ placeHolder, onQuery }) => {
+export const SearchBar: FC<Props> = ({ placeHolder = "Buscar...", onQuery }) => {
     const [inputValue, setInputValue] = useState('');
 
+    const debouncedSearch = useCallback((value: string) => {
+        onQuery(value);
+    }, [onQuery]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            debouncedSearch(inputValue);
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [inputValue, debouncedSearch]);
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const newQuery = event.target.value;
-        setInputValue(newQuery);
-        
-        // No llamamos a onQuery aquí, delegamos esa lógica de debounce al padre.
-        // Solo necesitamos notificar al padre sobre el cambio de texto.
-        onQuery(newQuery);
+        setInputValue(event.target.value);
     };
+
+    return (
+        <div className="search-container">
+            <input
+                type="text"
+                className="search-input"
+                placeholder={placeHolder}
+                value={inputValue}
+                onChange={handleInputChange}
+                style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontSize: '16px',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                }}
+            />
+        </div>
+    );
 
     return (
         <div className="search-container" style={{ margin: '20px auto', maxWidth: '600px' }}>

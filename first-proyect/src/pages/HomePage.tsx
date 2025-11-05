@@ -1,38 +1,40 @@
 // ===================================
 // src/pages/HomePage.tsx (Controlador Principal)
 // ===================================
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import { CourtCard } from '../canchas/components/CourtCard';
 import { mockCanchas } from '../mock-data/canchas.mock';
 import type { CanchaProps } from '../interfaces/cancha.interface';
-// Lógica de simulación de datos (reemplazaría tus actions)
-const getCanchasSimulated = (query: string = ''): CanchaProps[] => {
-    if (!query) return mockCanchas;
-    const lowerQuery = query.toLowerCase();
-    return mockCanchas.filter(c => 
-        c.nombre.toLowerCase().includes(lowerQuery) || 
-        c.tipo.toLowerCase().includes(lowerQuery)
-    );
-}
+import { SearchBar } from '../sharedComponents/components/SearchBar';
 
+// Lógica de búsqueda mejorada
+const searchCanchas = (canchas: CanchaProps[], query: string = ''): CanchaProps[] => {
+    if (!query.trim()) return canchas;
+    const lowerQuery = query.toLowerCase().trim();
+    return canchas.filter(cancha => 
+        cancha.nombre.toLowerCase().includes(lowerQuery) || 
+        cancha.tipo.toLowerCase().includes(lowerQuery) ||
+        cancha.descripcion.toLowerCase().includes(lowerQuery)
+    );
+};
 
 export const HomePage: FC = () => {
-    const [canchas, setCanchas] = useState(mockCanchas);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [canchas, setCanchas] = useState<CanchaProps[]>(mockCanchas);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Search term is controlled locally by HomePage (could be wired to a SearchBar)
-
-    // Requisito: GESTIÓN DE ESTADO y Lógica de Filtrado
-    useEffect(() => {
-        // Simulamos la carga inicial y el filtrado
+    const handleSearch = useCallback((query: string) => {
         setIsLoading(true);
-        const filtered = getCanchasSimulated(searchTerm);
-        setCanchas(filtered);
-        setIsLoading(false);
-    }, [searchTerm]); // Se dispara cuando el searchTerm (debounced) cambia
+        try {
+            const filteredCanchas = searchCanchas(mockCanchas, query);
+            setCanchas(filteredCanchas);
+        } catch (error) {
+            console.error('Error al buscar canchas:', error);
+            setCanchas(mockCanchas);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     return (
         <div className="container">
@@ -42,10 +44,13 @@ export const HomePage: FC = () => {
             </header>
 
             <section style={{ marginTop: 24 }}>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', margin: '16px 0' }}>
-                    <Link to="/category/futsal" className="btn">
-                        🥅 Futsal
-                    </Link>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+                    <div style={{ width: '100%', maxWidth: '500px' }}>
+                        <SearchBar 
+                            placeHolder="Buscar canchas por nombre, tipo o descripción..."
+                            onQuery={handleSearch}
+                        />
+                    </div>
                 </div>
             </section>
 
