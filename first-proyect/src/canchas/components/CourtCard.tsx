@@ -19,27 +19,24 @@ export const CourtCard = memo(({ cancha }: Props) => {
     }
 
     return (
-        // CLAVE: Aplica la clase CSS .gif-card para el diseño responsivo
-        <div 
-            className="gif-card" 
-            onClick={handleViewDetails} 
-            style={{ cursor: 'pointer' }}
-        >
-                                    <img src={cancha.imagenUrl || 'placeholder.jpg'} alt={cancha.nombre} />
-                                    <h3 style={{ marginTop: 12 }}>{cancha.nombre}</h3>
-                                    <p style={{ color: 'var(--muted)' }}>{cancha.tipo} • {cancha.capacidad} pers</p>
-                                    <div style={{ marginTop: 8, fontWeight: 700, color: 'var(--green-700)' }}>${cancha.precioHora.toLocaleString('es-CL')} / hr</div>
-            
-            <button
-                onClick={(e) => {
-                    e.stopPropagation(); // Evita el click del div
-                    addToCart(cancha); // Llama a la función de GESTIÓN DE ESTADO
-                }}
-                className="btn"
-                style={{ marginTop: '10px' }}
-            >
-                Agregar al Carrito
-            </button>
+        <div className="gif-card" onClick={handleViewDetails} style={{ cursor: 'pointer' }}>
+            <div className="card-media">
+                <img src={cancha.imagenUrl || 'placeholder.jpg'} alt={cancha.nombre} />
+                <div className="card-badge">{cancha.tipo}</div>
+            </div>
+            <div className="card-body">
+                <h3 className="card-title">{cancha.nombre}</h3>
+                <p className="card-meta">Capacidad: {cancha.capacidad} pers</p>
+                <div className="card-footer" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className="card-price">${cancha.precioHora.toLocaleString('es-CL')} / hr</div>
+                    <div>
+                        <button
+                            onClick={(e) => { e.stopPropagation(); addToCart(cancha); }}
+                            className="btn"
+                        >Agregar</button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 });

@@ -1,8 +1,6 @@
-// ===================================
-// src/contexts/CartContexts.tsx (CORREGIDO)
-// ===================================
+// Cart context: simple cart stored in memory (React state)
 import { createContext, useContext, useState } from 'react';
-import type { ReactNode, FC } from 'react'; // tipos
+import type { ReactNode, FC } from 'react';
 import type { CanchaProps } from '../interfaces/cancha.interface';
 
 interface CartContextType {
@@ -11,6 +9,7 @@ interface CartContextType {
   removeFromCart: (index: number) => void;
   clearCart: () => void;
   totalItems: number;
+  total: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -28,12 +27,16 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const clearCart = () => setCarrito([]);
 
+  const totalItems = carrito.length;
+  const total = carrito.reduce((sum, item) => sum + item.precioHora, 0);
+
   const value: CartContextType = {
     carrito,
     addToCart,
     removeFromCart,
     clearCart,
-    totalItems: carrito.length,
+    totalItems,
+    total,
   };
 
   return (

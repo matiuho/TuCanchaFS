@@ -48,17 +48,7 @@ export const HomePage: FC = () => {
                 <div className="content-center" style={{ marginTop: '50px', textAlign: 'center' }}>Cargando canchas...</div>
             ) : (
                 <main style={{ marginTop: '10px' }}>
-                    <section style={{ marginBottom: 18 }}>
-                        <h3 style={{ margin: '6px 0' }}>Canchas destacadas</h3>
-                        <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
-                            {mockCanchas.slice(0,3).map(c => (
-                                <div key={c.id} style={{ minWidth: 260 }}>
-                                    <CourtCard cancha={c} />
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
+                    {/* Sección destacada eliminada por petición del usuario */}
                     <section>
                         <h3 style={{ margin: '6px 0' }}>Todas las canchas</h3>
                         <div className="gifs-container">
