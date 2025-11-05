@@ -20,11 +20,7 @@ export const CartPage: FC = () => { // Renombrado de addReservationToCart a addT
 
   const totalFinal = subtotal * (1 - quantityDiscount) * (1 - promoDiscount);
 
-  const handleCheckout = () => {
-    alert('Proceso de checkout simulado — gracias!');
-    //clearCart();
-    navigate('/confirmation');
-  };
+  // (checkout simulado removido para evitar warnings de TS por variable no usada)
 
   return (
     <div style={{ padding: 20 }}>

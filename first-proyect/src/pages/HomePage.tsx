@@ -1,7 +1,7 @@
 // ===================================
 // src/pages/HomePage.tsx (Controlador Principal)
 // ===================================
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import type { FC } from 'react';
 import { CourtCard } from '../canchas/components/CourtCard';
 import { mockCanchas } from '../mock-data/canchas.mock';

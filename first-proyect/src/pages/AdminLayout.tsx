@@ -20,10 +20,13 @@ export const AdminLayout: FC = () => {
                             <Link to="/admin/boletas">Boletas</Link>
                         </li>
                         <li>
-                            <Link to="/admin/productos">Productos</Link>
+                            <Link to="/admin/canchas">Canchas</Link>
                         </li>
                         <li>
-                            <Link to="/admin/categorias">Categorías</Link>
+                            
+                        </li>
+                        <li>
+                            
                         </li>
                         <li>
                             <Link to="/admin/usuarios">Usuarios</Link>

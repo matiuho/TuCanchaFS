@@ -1,7 +1,6 @@
 // src/pages/CanchaDetail.tsx
 import { useParams, useNavigate } from 'react-router-dom';
-import { type FC, useMemo } from 'react';
-import type { CanchaProps } from '../interfaces/cancha.interface';
+import { useState, type FC, useMemo } from 'react';
 import { useCart } from '../contexts/CartContexts';
 import { mockCanchas } from '../mock-data/canchas.mock';
 
@@ -10,7 +9,7 @@ export const CanchaDetail: FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // Solución al problema: Buscamos la cancha por el ID de la URL
+  // Buscamos la cancha por el ID de la URL
   const cancha = mockCanchas.find(c => c.id === Number(id));
   
   if (!cancha) {
@@ -32,11 +31,39 @@ export const CanchaDetail: FC = () => {
     navigate('/cart');
   };
 
+  // Galería de imágenes: primera es imagenUrl seguida de fotos[] (evitar duplicados)
+  const images = useMemo(() => {
+    const rest = (cancha.fotos || []).filter(f => f && f !== cancha.imagenUrl);
+    return [cancha.imagenUrl, ...rest];
+  }, [cancha]);
+  const [current, setCurrent] = useState(0);
+
   // --- Renderizado del componente ---
 
   return (
     <div className="detail-page">
-      <img className="detail-image" src={cancha.imagenUrl} alt={cancha.nombre} />
+      <div style={{ flex: '0 0 auto' }}>
+        <img className="detail-image" src={images[current]} alt={cancha.nombre} />
+        {images.length > 1 && (
+          <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+            {images.map((src, idx) => (
+              <button
+                key={src + idx}
+                onClick={() => setCurrent(idx)}
+                style={{
+                  border: current === idx ? '2px solid var(--topbar)' : '1px solid #ddd',
+                  padding: 0,
+                  borderRadius: 8,
+                  background: 'transparent',
+                  cursor: 'pointer'
+                }}
+              >
+                <img src={src} alt={`thumb-${idx}`} style={{ width: 72, height: 56, objectFit: 'cover', borderRadius: 6, display: 'block' }} />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
       <div className="detail-info">
         <header>
           <h2>{cancha.nombre}</h2>

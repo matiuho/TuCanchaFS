@@ -355,6 +355,9 @@ textarea.form-input {
 /* Search input modern look */
 .search-input{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(25,119,73,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
 
+/* Small badge chip */
+.badge{ display:inline-block; padding:4px 8px; border-radius:999px; background: rgba(0,139,139,0.1); color: var(--topbar); font-size: 12px; font-weight: 600; }
+
 /* Small responsive tweaks */
 @media (max-width: 720px){
   .detail-page{ flex-direction:column; }

@@ -12,4 +12,5 @@ export interface CanchaProps {
     capacidad: number;
     imagenUrl: string;
     descripcion: string;
+    fotos?: string[]; // nuevas fotos adicionales opcionales
 }

@@ -1,7 +1,6 @@
 // src/pages/BlogDetail.tsx
 import type { FC } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import type { BlogPost } from '../interfaces/blog.interface';
 import { mockBlogs } from '../interfaces/blogs.mock.ts';
 
 export const BlogDetail: FC = () => {
