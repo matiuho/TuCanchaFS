@@ -1,36 +1,86 @@
 // ===================================
-// src/pages/HomePage.tsx
+// src/pages/HomePage.tsx (Controlador Principal)
 // ===================================
-import React, { useState, useEffect, useMemo } from 'react';
-import { SearchBar } from '../sharedComponents/components/SearchBar'; // Asume que creaste la SearchBar
+import { useState, useEffect } from 'react';
+import type { FC } from 'react';
 import { CourtCard } from '../canchas/components/CourtCard';
 import { mockCanchas } from '../mock-data/canchas.mock';
-import { useCart } from '../contexts/CartContexts';
+import type { CanchaProps } from '../interfaces/cancha.interface';
+// Lógica de simulación de datos (reemplazaría tus actions)
+const getCanchasSimulated = (query: string = ''): CanchaProps[] => {
+    if (!query) return mockCanchas;
+    const lowerQuery = query.toLowerCase();
+    return mockCanchas.filter(c => c.nombre.toLowerCase().includes(lowerQuery));
+}
 
-// NOTA: En un proyecto real, usarías la lógica de getCanchasSimulated de las actions
-// Aquí, para simplificar el mock, usamos mockCanchas directamente.
 
-export const HomePage = () => {
-    const { totalItems } = useCart();
+export const HomePage: FC = () => {
     const [canchas, setCanchas] = useState(mockCanchas);
-    
-    // Aquí iría tu lógica de búsqueda con debounce (del HomePageController)
-    // Pero por ahora, solo mostramos la lista completa.
-    
-    return (
-        <div style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1>🏟️ Lista de Canchas</h1>
-                <p>🛒 Ítems: **{totalItems}**</p> 
-                {/* En un componente real, usarías el ShoppingCartIcon */}
-            </div>
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-            {/* Simulación de la lista que usa tu grid responsivo */}
-            <div className="gifs-container" style={{ marginTop: '20px' }}>
-                {canchas.map(cancha => (
-                    <CourtCard key={cancha.id} cancha={cancha} />
-                ))}
-            </div>
+    // Search term is controlled locally by HomePage (could be wired to a SearchBar)
+
+    // Requisito: GESTIÓN DE ESTADO y Lógica de Filtrado
+    useEffect(() => {
+        // Simulamos la carga inicial y el filtrado
+        setIsLoading(true);
+        const filtered = getCanchasSimulated(searchTerm);
+        setCanchas(filtered);
+        setIsLoading(false);
+    }, [searchTerm]); // Se dispara cuando el searchTerm (debounced) cambia
+
+    return (
+        <div className="container">
+            <header style={{ marginBottom: 18 }}>
+                <h1 style={{ textAlign: 'center', margin: 0 }}>Encuentra la cancha perfecta</h1>
+                <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: 8 }}>Reserva canchas cerca de ti en segundos — filtra por tipo, precio y capacidad.</p>
+
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 14 }}>
+                    <button className="btn small" onClick={() => setSearchTerm('fútbol')}>Fútbol</button>
+                    <button className="btn small" onClick={() => setSearchTerm('mini')}>Mini fútbol</button>
+                    <button className="btn small" onClick={() => setSearchTerm('padel')}>Padel</button>
+                    <button className="btn small" onClick={() => setSearchTerm('tenis')}>Tenis</button>
+                </div>
+            </header>
+
+            {isLoading ? (
+                <div className="content-center" style={{ marginTop: '50px', textAlign: 'center' }}>Cargando canchas...</div>
+            ) : (
+                <main style={{ marginTop: '10px' }}>
+                    <section style={{ marginBottom: 18 }}>
+                        <h3 style={{ margin: '6px 0' }}>Canchas destacadas</h3>
+                        <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+                            {mockCanchas.slice(0,3).map(c => (
+                                <div key={c.id} style={{ minWidth: 260 }}>
+                                    <CourtCard cancha={c} />
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 style={{ margin: '6px 0' }}>Todas las canchas</h3>
+                        <div className="gifs-container">
+                            {canchas.length === 0 ? (
+                                <p style={{ gridColumn: '1 / -1', textAlign: 'center' }}>No se encontraron canchas.</p>
+                            ) : (
+                                canchas.map(cancha => (
+                                    <CourtCard key={cancha.id} cancha={cancha} />
+                                ))
+                            )}
+                        </div>
+                    </section>
+                </main>
+            )}
+
+            <footer style={{ marginTop: 28, padding: 18, borderTop: '1px solid rgba(0,0,0,0.04)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                    <strong>TuCancha</strong>
+                    <div style={{ color: 'var(--muted)' }}>Conecta jugadores y canchas locales</div>
+                </div>
+                <div style={{ color: 'var(--muted)' }}>© {new Date().getFullYear()} TuCancha</div>
+            </footer>
         </div>
     );
 };

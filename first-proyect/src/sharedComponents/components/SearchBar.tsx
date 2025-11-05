@@ -2,7 +2,8 @@
 // src/sharedComponents/components/SearchBar.tsx
 // ===================================
 
-import React, { FC, useState, ChangeEvent } from 'react';
+import { useState } from 'react';
+import type { FC, ChangeEvent } from 'react';
 
 interface Props {
     placeHolder: string;

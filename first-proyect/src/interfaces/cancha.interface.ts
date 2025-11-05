@@ -1,7 +1,7 @@
 // ===================================
 // src/interfaces/cancha.interface.ts
 // ===================================
-// Define las propiedades que debe tener cada objeto de cancha
+// Define las PROPIEDADES (requisito de la presentación)
 export interface CanchaProps {
     id: number;
     nombre: string;
@@ -10,11 +10,4 @@ export interface CanchaProps {
     capacidad: number;
     imagenUrl: string;
     descripcion: string;
-}
-
-// Interfaz para el objeto que devuelve la API (Lista)
-export interface CanchaListResponse {
-    ok: boolean;
-    statusCode: number;
-    canchas: CanchaProps[]; 
 }
