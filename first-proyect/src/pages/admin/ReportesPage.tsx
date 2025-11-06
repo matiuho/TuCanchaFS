@@ -14,22 +14,20 @@ export const ReportesPage: FC = () => {
     };
     return (
         <div className="admin-page">
-            <h1>Reportes</h1>
-            <div className="admin-content">
-                <div className="profile-card" style={{ maxWidth: 640 }}>
-                    <h2>Enviar reporte</h2>
-                    <form onSubmit={onSubmit}>
-                        <div className="form-group">
-                            <label>Título</label>
-                            <input className="form-input" placeholder="Asunto del reporte" required />
-                        </div>
-                        <div className="form-group">
-                            <label>Descripción</label>
-                            <textarea className="form-input" placeholder="Describe el problema o sugerencia" rows={4} required />
-                        </div>
-                        <button className="btn" type="submit">Enviar</button>
-                    </form>
-                </div>
+            <h1 style={{ textAlign: 'center' }}>Reportes</h1>
+            <div className="profile-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                <h2>Enviar reporte</h2>
+                <form onSubmit={onSubmit}>
+                    <div className="form-group">
+                        <label>Título</label>
+                        <input className="form-input" placeholder="Asunto del reporte" required />
+                    </div>
+                    <div className="form-group">
+                        <label>Descripción</label>
+                        <textarea className="form-input" placeholder="Describe el problema o sugerencia" rows={6} required />
+                    </div>
+                    <button className="btn" type="submit">Enviar</button>
+                </form>
             </div>
         </div>
     );

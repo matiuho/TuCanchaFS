@@ -22,8 +22,8 @@ export const LoginPage: FC = () => {
     const ok = auth.login(trimmed, password);
     if (ok) {
       if (auth.isAdmin()) {
-        // Si es admin, redirige a la página de administración (boletas)
-        navigate('/admin/boletas');
+        // Si es admin, redirige a la página de administración (canchas)
+        navigate('/admin/canchas');
       } else {
         // Si es usuario normal, redirige a la página principal
         navigate('/');

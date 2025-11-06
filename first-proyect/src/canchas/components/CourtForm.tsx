@@ -16,9 +16,7 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
         capacidad: initialData?.capacidad || 0,
         imagenUrl: initialData?.imagenUrl || '',
         descripcion: initialData?.descripcion || '',
-        fotos: initialData?.fotos || []
     });
-    const [newFoto, setNewFoto] = useState('');
 
     // Sincronizar cuando cambie la cancha a editar
     useEffect(() => {
@@ -30,9 +28,7 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
                 capacidad: initialData.capacidad || 0,
                 imagenUrl: initialData.imagenUrl || '',
                 descripcion: initialData.descripcion || '',
-                fotos: initialData.fotos || []
             });
-            setNewFoto('');
         }
     }, [initialData]);
 
@@ -49,7 +45,6 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
                 capacidad: 0,
                 imagenUrl: '',
                 descripcion: '',
-                fotos: []
             });
         }
     };
@@ -110,43 +105,6 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
                     required
                     className="form-input"
                 />
-            </div>
-            <div className="form-group">
-                <label>Galería de fotos (URLs):</label>
-                <div style={{ display: 'flex', gap: 8 }}>
-                    <input
-                        type="url"
-                        value={newFoto}
-                        onChange={(e) => setNewFoto(e.target.value)}
-                        placeholder="https://..."
-                        className="form-input"
-                    />
-                    <button
-                        type="button"
-                        className="btn small"
-                        onClick={() => {
-                            const url = newFoto.trim();
-                            if (!url) return;
-                            setFormData(prev => ({ ...prev, fotos: [...(prev.fotos || []), url] }));
-                            setNewFoto('');
-                        }}
-                    >Agregar</button>
-                </div>
-                {formData.fotos && formData.fotos.length > 0 && (
-                    <ul style={{ listStyle: 'none', padding: 0, marginTop: 8, display: 'grid', gap: 8 }}>
-                        {formData.fotos.map((f, idx) => (
-                            <li key={`${f}-${idx}`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <img src={f} alt={`foto-${idx}`} style={{ width: 56, height: 40, objectFit: 'cover', borderRadius: 6 }} />
-                                <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f}</span>
-                                <button
-                                    type="button"
-                                    className="btn small secondary"
-                                    onClick={() => setFormData(prev => ({ ...prev, fotos: (prev.fotos || []).filter((_, i) => i !== idx) }))}
-                                >Quitar</button>
-                            </li>
-                        ))}
-                    </ul>
-                )}
             </div>
             <div className="form-group">
                 <label>Descripción:</label>

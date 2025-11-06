@@ -17,16 +17,7 @@ export const AdminLayout: FC = () => {
                 <nav className="admin-nav">
                     <ul className="admin-menu">
                         <li>
-                            <Link to="/admin/boletas">Boletas</Link>
-                        </li>
-                        <li>
                             <Link to="/admin/canchas">Canchas</Link>
-                        </li>
-                        <li>
-                            
-                        </li>
-                        <li>
-                            
                         </li>
                         <li>
                             <Link to="/admin/usuarios">Usuarios</Link>

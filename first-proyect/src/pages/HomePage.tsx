@@ -41,7 +41,7 @@ export const HomePage: FC = () => {
         <div className="container">
             <header style={{ marginBottom: 18 }}>
                 <h1 style={{ textAlign: 'center', margin: 0 }}>Encuentra la cancha perfecta</h1>
-                <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: 8 }}>Reserva canchas cerca de ti en segundos — filtra por tipo, precio y capacidad.</p>
+                <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: 8 }}>Reserva canchas cerca de ti en segundos</p>
             </header>
 
             <section style={{ marginTop: 24 }}>
@@ -61,7 +61,7 @@ export const HomePage: FC = () => {
                 <main style={{ marginTop: '10px' }}>
                     {/* Sección destacada eliminada por petición del usuario */}
                     <section>
-                        <h3 style={{ margin: '6px 0' }}>Todas las canchas</h3>
+                        <h3 style={{ margin: '6px 0', textAlign: 'center' }}>Todas las canchas</h3>
                         <div className="gifs-container">
                             {canchas.length === 0 ? (
                                 <p style={{ gridColumn: '1 / -1', textAlign: 'center' }}>No se encontraron canchas.</p>

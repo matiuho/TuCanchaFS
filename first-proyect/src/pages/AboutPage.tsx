@@ -11,17 +11,11 @@ export const AboutPage: FC = () => {
       </p>
 
       <section style={{ marginTop: 18 }}>
-        <h3>Nuestro equipo</h3>
-        <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
-          <div style={{ background: 'white', padding: 12, borderRadius: 10, boxShadow: '0 8px 20px rgba(9,30,15,0.04)', flex: 1 }}>
-            <strong>Ana</strong>
-            <div style={{ color: 'var(--muted)' }}>Co-fundadora • Producto</div>
-          </div>
-          <div style={{ background: 'white', padding: 12, borderRadius: 10, boxShadow: '0 8px 20px rgba(9,30,15,0.04)', flex: 1 }}>
-            <strong>Marco</strong>
-            <div style={{ color: 'var(--muted)' }}>Co-fundador • Tecnología</div>
-          </div>
-        </div>
+        <h3>Nuestros Fundadores</h3>
+        <p style={{ color: 'var(--muted)' }}>
+          Somos Samuel Villanueva y Matías Concha. A nuestra corta edad, somos capaces de reconocer lo que la gente busca,
+          y por eso estamos comprometidos a mejorar la experiencia de reserva de canchas a través de esta plataforma web.
+        </p>
       </section>
 
       <section style={{ marginTop: 18 }}>

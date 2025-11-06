@@ -1,9 +1,19 @@
 // src/pages/CanchaDetail.tsx
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, type FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { useCart } from '../contexts/CartContexts';
 import { readCourts } from '../utils/courtsStorage';
 import { useToast } from '../sharedComponents/components/ToastProvider';
+
+const randomLocations = [
+  'Santiago Centro',
+  'Puente Alto',
+  'La Reina',
+  'Ñuñoa',
+  'Vitacura',
+  'Peñalolén',
+  'Macul'
+];
 
 export const CanchaDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,14 +24,10 @@ export const CanchaDetail: FC = () => {
   // Buscar la cancha por ID (memoizada)
   const cancha = useMemo(() => readCourts().find(c => c.id === Number(id)), [id]);
 
-  // Galería de imágenes: primera es imagenUrl seguida de fotos[] (evitar duplicados)
-  const images = useMemo(() => {
-    if (!cancha) return [] as string[];
-    const rest = (cancha.fotos || []).filter(f => f && f !== cancha.imagenUrl);
-    return [cancha.imagenUrl, ...rest];
+  // Generar una ubicación aleatoria solo si no está definida, y memorizarla.
+  const displayLocation = useMemo(() => {
+    return cancha?.ubicacion || randomLocations[Math.floor(Math.random() * randomLocations.length)];
   }, [cancha]);
-
-  const [current, setCurrent] = useState(0);
 
   // Lógica para agregar al carrito
   const handleAddToCart = () => {
@@ -43,24 +49,8 @@ export const CanchaDetail: FC = () => {
         <>
           {/* Media principal 16:9 */}
           <div className="detail-hero">
-            <img src={images[current] || cancha.imagenUrl} alt={cancha.nombre} />
+            <img src={cancha.imagenUrl} alt={cancha.nombre} />
           </div>
-
-          {/* Miniaturas uniformes */}
-          {images.length > 1 && (
-            <div className="thumbs-grid">
-              {images.map((src, idx) => (
-                <button
-                  key={src + idx}
-                  onClick={() => setCurrent(idx)}
-                  className={`thumb-btn ${current === idx ? 'active' : ''}`}
-                  aria-label={`Ver imagen ${idx + 1}`}
-                >
-                  <img src={src} alt={`thumb-${idx}`} />
-                </button>
-              ))}
-            </div>
-          )}
 
           {/* Información ordenada */}
           <div className="detail-info-card">
@@ -69,6 +59,8 @@ export const CanchaDetail: FC = () => {
               <span><strong>Tipo:</strong> {cancha.tipo}</span>
               <span className="dot" />
               <span><strong>Capacidad:</strong> {cancha.capacidad} personas</span>
+              <span className="dot" />
+              <span><strong>Ubicación:</strong> {displayLocation}</span>
             </div>
             <div className="detail-price">
               <span>Precio por hora</span>
@@ -90,12 +82,6 @@ export const CanchaDetail: FC = () => {
             </div>
           </div>
 
-          {/* Ubicación debajo de la cancha */}
-          <div className="location-card">
-            <h4>Ubicación</h4>
-            <div className="map-placeholder">Mapa (placeholder)</div>
-            <p className="location-text">Av. Siempre Viva 742, Springfield.</p>
-          </div>
         </>
       )}
     </div>
