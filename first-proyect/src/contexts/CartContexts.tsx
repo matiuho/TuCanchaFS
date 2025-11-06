@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 // Cart context: simple cart stored in memory (React state)
 import { createContext, useContext, useState, useMemo } from 'react';
 import type { ReactNode, FC, Dispatch, SetStateAction } from 'react';

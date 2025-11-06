@@ -1,13 +1,13 @@
 // src/pages/CategoryPage.tsx
 import type { FC } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { mockCanchas } from '../mock-data/canchas.mock';
+import { readCourts } from '../utils/courtsStorage';
 import { CourtCard } from '../canchas/components/CourtCard';
 
 export const CategoryPage: FC = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
 
-  const filteredCanchas = mockCanchas.filter(
+  const filteredCanchas = readCourts().filter(
     (cancha) => cancha.tipo.toLowerCase() === categoryName?.toLowerCase()
   );
 

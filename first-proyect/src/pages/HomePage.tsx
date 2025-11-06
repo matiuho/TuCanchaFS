@@ -4,7 +4,7 @@
 import { useState, useCallback } from 'react';
 import type { FC } from 'react';
 import { CourtCard } from '../canchas/components/CourtCard';
-import { mockCanchas } from '../mock-data/canchas.mock';
+import { readCourts } from '../utils/courtsStorage';
 import type { CanchaProps } from '../interfaces/cancha.interface';
 import { SearchBar } from '../sharedComponents/components/SearchBar';
 
@@ -20,17 +20,18 @@ const searchCanchas = (canchas: CanchaProps[], query: string = ''): CanchaProps[
 };
 
 export const HomePage: FC = () => {
-    const [canchas, setCanchas] = useState<CanchaProps[]>(mockCanchas);
+    const [canchas, setCanchas] = useState<CanchaProps[]>(readCourts());
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSearch = useCallback((query: string) => {
         setIsLoading(true);
         try {
-            const filteredCanchas = searchCanchas(mockCanchas, query);
+            const base = readCourts();
+            const filteredCanchas = searchCanchas(base, query);
             setCanchas(filteredCanchas);
         } catch (error) {
             console.error('Error al buscar canchas:', error);
-            setCanchas(mockCanchas);
+            setCanchas(readCourts());
         } finally {
             setIsLoading(false);
         }

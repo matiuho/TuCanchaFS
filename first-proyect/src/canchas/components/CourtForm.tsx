@@ -1,4 +1,4 @@
-import { useState, type FC, type FormEvent } from 'react';
+import { useEffect, useState, type FC, type FormEvent } from 'react';
 import type { CanchaProps } from '../../interfaces/cancha.interface';
 
 interface CourtFormProps {
@@ -19,6 +19,22 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
         fotos: initialData?.fotos || []
     });
     const [newFoto, setNewFoto] = useState('');
+
+    // Sincronizar cuando cambie la cancha a editar
+    useEffect(() => {
+        if (initialData) {
+            setFormData({
+                nombre: initialData.nombre || '',
+                tipo: initialData.tipo || '',
+                precioHora: initialData.precioHora || 0,
+                capacidad: initialData.capacidad || 0,
+                imagenUrl: initialData.imagenUrl || '',
+                descripcion: initialData.descripcion || '',
+                fotos: initialData.fotos || []
+            });
+            setNewFoto('');
+        }
+    }, [initialData]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();

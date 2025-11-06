@@ -67,8 +67,14 @@ export const ProductosPage: FC = () => {
 
     const startEdit = (p: Product) => {
         setEditing(p);
-        const { id, ...rest } = p;
-        setForm(rest);
+        setForm({
+            nombre: p.nombre,
+            precio: p.precio,
+            imagenUrl: p.imagenUrl,
+            descripcion: p.descripcion,
+            categoria: p.categoria,
+            stock: p.stock,
+        });
     };
 
     const cancelEdit = () => {

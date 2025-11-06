@@ -2,6 +2,7 @@ import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../sharedComponents/components/ToastProvider';
 
 export const RegisterPage: FC = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ export const RegisterPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const auth = useAuth();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -21,14 +23,20 @@ export const RegisterPage: FC = () => {
     if (!/[A-Z]/.test(password)) return setError('La contraseña debe contener al menos una letra mayúscula.');
 
     const ok = auth.register(trimmed, password);
-    if (ok) navigate('/');
-    else setError('El usuario ya existe, intenta iniciar sesión.');
+    if (ok) {
+      showToast({
+        type: 'success',
+        title: 'Cuenta creada',
+        message: 'Tu cuenta fue creada con éxito. Inicia sesión para continuar.'
+      });
+      navigate('/login');
+    } else setError('El usuario ya existe, intenta iniciar sesión.');
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>Register</h2>
+  <h2>Crear cuenta</h2>
         <form onSubmit={onSubmit} className="auth-form">
           <div className="auth-form-row">
             <label className="auth-label">Email</label>
@@ -40,8 +48,8 @@ export const RegisterPage: FC = () => {
           </div>
           {error && <div className="auth-error">{error}</div>}
           <div className="auth-actions">
-            <button className="btn" type="submit">Register</button>
-            <Link to="/login" className="btn secondary">Login</Link>
+            <button className="btn" type="submit">Crear cuenta</button>
+            <Link to="/login" className="btn secondary">Ir a Login</Link>
           </div>
         </form>
       </div>

@@ -16,7 +16,7 @@ export const PerfilPage: FC = () => {
         try {
             const raw = localStorage.getItem(KEY_USERS);
             if (raw) setUsers(JSON.parse(raw) as LocalUser[]);
-        } catch {}
+        } catch { /* ignore parse error */ }
     }, []);
 
     const saveUsers = (next: LocalUser[]) => {

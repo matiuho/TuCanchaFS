@@ -1,46 +1,11 @@
 import { useEffect, useState, type FC } from 'react';
 import type { CanchaProps } from '../interfaces/cancha.interface';
-import { mockCanchas } from '../mock-data/canchas.mock';
 import { CourtForm } from '../canchas/components/CourtForm';
+import { readCourts as readCourtsFromStorage, writeCourts as writeCourtsToStorage } from '../utils/courtsStorage';
 
-const KEY_COURTS = 'tuCancha_courts';
-
-function readCourts(): CanchaProps[] {
-    try {
-        const raw = localStorage.getItem(KEY_COURTS);
-        if (!raw) return mockCanchas;
-        const parsed = JSON.parse(raw);
-        const stored: CanchaProps[] = Array.isArray(parsed) ? parsed : mockCanchas;
-        // Pequeña migración: asegurar campo fotos y mezclar fotos desde mocks
-        const merged = stored.map((c) => {
-            const base = mockCanchas.find(m => m.id === c.id);
-            const storedFotos = Array.isArray((c as any).fotos) ? (c as any).fotos as string[] : [];
-            const mockFotos = Array.isArray((base as any)?.fotos) ? (base as any).fotos as string[] : [];
-            const all = [...storedFotos];
-            for (const f of mockFotos) {
-                if (!all.includes(f)) all.push(f);
-            }
-            // También sincronizamos imagenUrl principal desde el mock (para reflejar cambios de portada)
-            const imagenUrl = (base && base.imagenUrl) ? base.imagenUrl : c.imagenUrl;
-            let result: CanchaProps = { ...c, fotos: all, imagenUrl } as CanchaProps;
-            // Remociones específicas: eliminar esta URL si quedó en localStorage para canchas donde ya no debe estar
-            const toRemove = 'http://www.costanerasport.cl/images/reservas/05.jpg';
-            if (Array.isArray(result.fotos)) {
-                if (result.id === 4 || result.id === 2) {
-                    result = { ...result, fotos: result.fotos.filter(u => u !== toRemove) };
-                }
-            }
-            return result;
-        });
-        return merged;
-    } catch {
-        return mockCanchas;
-    }
-}
-
-function writeCourts(courts: CanchaProps[]) {
-    localStorage.setItem(KEY_COURTS, JSON.stringify(courts));
-}
+// Centralizamos lectura/escritura desde util para coherencia en toda la app
+const readCourts = (): CanchaProps[] => readCourtsFromStorage();
+const writeCourts = (courts: CanchaProps[]) => writeCourtsToStorage(courts);
 
 export const AdminCourtsPage: FC = () => {
     const [canchas, setCanchas] = useState<CanchaProps[]>(() => readCourts());
@@ -82,17 +47,31 @@ export const AdminCourtsPage: FC = () => {
         <div className="admin-page">
             <div className="admin-header">
                 <h1>Administración de Canchas</h1>
-                {editingCourt ? (
-                    <button className="btn secondary" onClick={() => setEditingCourt(null)}>
-                        Cancelar Edición
-                    </button>
-                ) : null}
+                <div style={{ display: 'flex', gap: 8 }}>
+                    {editingCourt ? (
+                        <button className="btn secondary" onClick={() => setEditingCourt(null)}>
+                            Cancelar Edición
+                        </button>
+                    ) : (
+                        <button
+                            className="btn"
+                            onClick={() => {
+                                setEditingCourt(null);
+                                const el = document.getElementById('form-cancha');
+                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }}
+                        >
+                            Nueva Cancha
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div className="admin-content">
-                <div className="admin-form-section">
+                <div className="admin-form-section" id="form-cancha">
                     <h2>{editingCourt ? 'Editar Cancha' : 'Agregar Nueva Cancha'}</h2>
                     <CourtForm 
+                        key={editingCourt ? `edit-${editingCourt.id}` : 'new'}
                         onSubmit={editingCourt ? handleUpdateCourt : handleAddCourt}
                         initialData={editingCourt || undefined}
                     />
@@ -104,7 +83,7 @@ export const AdminCourtsPage: FC = () => {
                         {canchas.map(cancha => (
                             <div key={cancha.id} className="court-item">
                                 <div style={{ position: 'relative' }}>
-                                    <img src={(cancha.fotos && cancha.fotos[0]) || cancha.imagenUrl} alt={cancha.nombre} className="court-image" />
+                                    <img src={cancha.imagenUrl} alt={cancha.nombre} className="court-image" />
                                     {cancha.fotos && cancha.fotos.length > 0 && (
                                         <span style={{ position:'absolute', right:8, top:8, background: 'rgba(0,0,0,0.55)', color:'white', fontSize:12, padding:'2px 6px', borderRadius:999 }}>
                                             {cancha.fotos.length + 1} fotos

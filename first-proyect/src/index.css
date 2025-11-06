@@ -80,9 +80,6 @@ a { color: inherit; text-decoration: none; }
   padding: 20px;
 }
 
-.detail-page{ display:flex; gap:24px; align-items:flex-start; padding:20px; }
-.detail-image{ max-width:420px; border-radius:12px; box-shadow:0 8px 30px rgba(11,63,43,0.06); }
-.detail-info{ flex:1 }
 .price{ color:var(--green-700); font-size:1.25rem; font-weight:700 }
 
 .cart-summary{ background: linear-gradient(180deg,#fbfff9, #ffffff); padding:12px; border-radius:12px; border:1px solid rgba(25,119,73,0.06) }
@@ -360,7 +357,6 @@ textarea.form-input {
 
 /* Small responsive tweaks */
 @media (max-width: 720px){
-  .detail-page{ flex-direction:column; }
   .gif-card img{ border-radius:8px }
   .gifs-container {
     grid-template-columns: repeat(2, 1fr);
@@ -372,4 +368,26 @@ textarea.form-input {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============ CanchaDetail refined layout ============ */
+.detail-hero{ width:100%; max-width: 1000px; margin: 0 auto; }
+.detail-hero img{ width:100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 30px rgba(11,63,43,0.06); display:block }
+
+.thumbs-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap:10px; max-width: 1000px; margin: 10px auto 0 auto }
+.thumb-btn{ padding:0; border:1px solid #ddd; border-radius:8px; background: transparent; cursor:pointer; overflow:hidden }
+.thumb-btn.active{ outline:2px solid var(--topbar) }
+.thumb-btn img{ width:100%; aspect-ratio: 16 / 9; object-fit: cover; display:block }
+
+.detail-info-card{ background:#fff; border:1px solid rgba(0,0,0,0.04); border-radius: 12px; padding: 16px; max-width: 1000px; margin: 16px auto 0 auto; box-shadow: 0 8px 24px rgba(9,30,15,0.04) }
+.detail-meta{ display:flex; align-items:center; gap:10px; color: var(--muted); margin-top:6px }
+.detail-meta .dot{ width:4px; height:4px; border-radius:999px; background:#b8c5be; display:inline-block }
+.detail-price{ display:flex; align-items:baseline; gap:10px; margin-top:8px }
+.detail-price strong{ color: var(--topbar); font-size: 1.35rem }
+.detail-desc{ color: var(--muted); margin-top: 8px }
+.detail-services{ margin-top: 10px }
+.detail-services ul{ list-style: none; padding:0; margin:8px 0 0 0; display:flex; gap:12px; flex-wrap: wrap }
+
+.location-card{ background: #fff; border:1px solid rgba(0,0,0,0.04); border-radius:12px; padding:16px; max-width: 1000px; margin: 16px auto; box-shadow: 0 8px 24px rgba(9,30,15,0.04) }
+.map-placeholder{ height: 200px; background: #e9f7f6; border-radius: 8px; display:flex; align-items:center; justify-content:center; color: var(--muted) }
+.location-text{ color: var(--muted); font-size: 0.95rem; margin-top: 8px }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 
@@ -33,7 +34,7 @@ function readUsers(): Array<{ email: string; password: string; role: 'admin' | '
       return predefinedUsers;
     }
     return JSON.parse(raw) as Array<{ email: string; password: string; role: 'admin' | 'user' }>;
-  } catch (e) {
+  } catch {
     return predefinedUsers;
   }
 }
@@ -87,7 +88,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // New users are always registered as regular users
     const next = [...users, { email, password, role: 'user' as const }];
     writeUsers(next);
-    setUser({ email, role: 'user' });
+    // No iniciar sesión automáticamente; el usuario debe loguearse luego
     return true;
   };
 

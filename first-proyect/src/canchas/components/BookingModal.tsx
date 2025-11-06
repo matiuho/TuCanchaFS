@@ -2,6 +2,7 @@
 import { type FC } from 'react';
 import type { CanchaProps } from '../../interfaces/cancha.interface';
 import { useCart } from '../../contexts/CartContexts';
+import { useToast } from '../../sharedComponents/components/ToastProvider';
 
 interface Props {
   cancha: CanchaProps;
@@ -11,10 +12,11 @@ interface Props {
 
 export const BookingModal: FC<Props> = ({ cancha, isOpen, onClose }) => {
   const { addToCart } = useCart();
+  const { showToast } = useToast();
 
   const handleAddToCart = () => {
     addToCart(cancha, 1); // Añade la cancha con 1 hora por defecto
-    alert(`"${cancha.nombre}" se ha añadido al carrito.`);
+    showToast({ type: 'success', title: 'Agregada al carrito', message: `"${cancha.nombre}" por 1 hora.` });
     onClose(); // Cierra el modal después de agregar
   };
 

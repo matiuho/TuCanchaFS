@@ -34,7 +34,6 @@ const App: FC = () => {
             <div className="brand">🏟️ TuCancha</div>
             <nav className="topbar-nav">
               <Link to="/">Inicio</Link>
-              <Link to="/">Canchas</Link>
               <Link to="/blog">Blog</Link>
               <Link to="/about">Quienes somos</Link>
               <Link to="/contact">Contacto</Link>
