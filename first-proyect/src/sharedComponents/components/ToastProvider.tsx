@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useCallback, useContext, useMemo, useState, type FC, type ReactNode } from 'react';
+import '../../styles/components/ToastProvider.css';
 
 type ToastType = 'success' | 'error' | 'info';
 
@@ -43,25 +44,19 @@ export const ToastProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <ToastContext.Provider value={value}>
       {children}
       {/* Contenedor de toasts */}
-      <div style={{ position: 'fixed', right: 16, top: 16, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 9999 }}>
-        {toasts.map(t => (
-          <div key={t.id}
-               role="status"
-               aria-live="polite"
-               style={{
-                 minWidth: 260,
-                 maxWidth: 360,
-                 background: 'white',
-                 border: '1px solid rgba(0,0,0,0.08)',
-                 boxShadow: '0 10px 24px rgba(0,0,0,0.10)',
-                 borderLeft: `4px solid ${t.type === 'error' ? '#e03131' : t.type === 'info' ? '#1971c2' : '#2f9e44'}`,
-                 padding: '12px 14px',
-                 borderRadius: 10
-               }}>
-            {t.title && <div style={{ fontWeight: 600, marginBottom: 4 }}>{t.title}</div>}
-            <div style={{ color: '#555' }}>{t.message}</div>
-          </div>
-        ))}
+      <div className="toast-container">
+        {toasts.map(t => {
+          const toastTypeClass = t.type === 'error' ? 'toast-error' : t.type === 'info' ? 'toast-info' : 'toast-success';
+          return (
+            <div key={t.id}
+                 role="status"
+                 aria-live="polite"
+                 className={`toast ${toastTypeClass}`}>
+              {t.title && <div className="toast-title">{t.title}</div>}
+              <div className="toast-message">{t.message}</div>
+            </div>
+          );
+        })}
       </div>
     </ToastContext.Provider>
   );

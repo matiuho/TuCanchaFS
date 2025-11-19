@@ -1,0 +1,21 @@
+/* CanchaDetail Styles */
+
+.cancha-detail-page {
+  padding-top: 24px;
+}
+
+.cancha-not-found {
+  text-align: center;
+}
+
+.cancha-not-found-text {
+  color: var(--muted);
+}
+
+.cancha-detail-title {
+  margin: 0;
+}
+
+.cancha-detail-footer {
+  margin-top: 16px;
+}

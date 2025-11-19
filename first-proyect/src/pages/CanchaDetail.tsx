@@ -4,6 +4,7 @@ import { type FC, useMemo } from 'react';
 import { useCart } from '../contexts/CartContexts';
 import { readCourts } from '../utils/courtsStorage';
 import { useToast } from '../sharedComponents/components/ToastProvider';
+import '../styles/pages/CanchaDetail.css';
 
 const randomLocations = [
   'Santiago Centro',
@@ -38,11 +39,11 @@ export const CanchaDetail: FC = () => {
 
   // --- Renderizado del componente ---
   return (
-    <div className="container" style={{ paddingTop: 24 }}>
+    <div className="container cancha-detail-page">
       {!cancha ? (
-        <div style={{ textAlign: 'center' }}>
+        <div className="cancha-not-found">
           <h2>Cancha no encontrada</h2>
-          <p style={{ color: 'var(--muted)' }}>La cancha que buscas no existe o fue removida.</p>
+          <p className="cancha-not-found-text">La cancha que buscas no existe o fue removida.</p>
           <button className="btn" onClick={() => navigate('/')}>Volver al Inicio</button>
         </div>
       ) : (
@@ -54,7 +55,7 @@ export const CanchaDetail: FC = () => {
 
           {/* Información ordenada */}
           <div className="detail-info-card">
-            <h2 style={{ margin: 0 }}>{cancha.nombre}</h2>
+            <h2 className="cancha-detail-title">{cancha.nombre}</h2>
             <div className="detail-meta">
               <span><strong>Tipo:</strong> {cancha.tipo}</span>
               <span className="dot" />
@@ -77,7 +78,7 @@ export const CanchaDetail: FC = () => {
               </ul>
             </div>
 
-            <div className="card-footer" style={{ marginTop: 16 }}>
+            <div className="card-footer cancha-detail-footer">
               <button className="btn" onClick={handleAddToCart}>Agregar al carrito</button>
             </div>
           </div>

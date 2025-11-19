@@ -1,0 +1,12 @@
+/* LoginPage Styles */
+
+.login-error-link {
+  margin-left: 8px;
+  color: var(--topbar);
+  font-weight: 700;
+}
+
+.login-demo-info {
+  margin-top: 12px;
+  color: var(--muted);
+}

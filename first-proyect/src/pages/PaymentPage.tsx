@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import '../styles/pages/PaymentPage.css';
 
 const VALID_CARD = '1234123412341234';
 const RESERVAS_KEY = 'reservas';
@@ -63,13 +64,13 @@ export const PaymentPage: FC = () => {
   };
 
   return (
-    <div className="container" style={{ paddingTop: 48, textAlign: 'center' }}>
+    <div className="container payment-page">
       <h2>Detalles de Pago</h2>
-      <p style={{ color: 'var(--muted)', maxWidth: 400, margin: '8px auto 0' }}>
+      <p className="payment-subtitle">
         Ingresa los datos de tu tarjeta de crédito para completar la reserva.
       </p>
 
-      <div style={{ marginTop: 24, maxWidth: 400, margin: '24px auto 0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="payment-form">
         <input
           type="text"
           placeholder="Nombre completo"
@@ -83,8 +84,8 @@ export const PaymentPage: FC = () => {
           className="search-input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          readOnly={!!user} // El campo es de solo lectura si el usuario está logueado
-          style={user ? { backgroundColor: '#f0f0f0', cursor: 'not-allowed' } : {}}
+          readOnly={!!user}
+          className={user ? "search-input payment-email-readonly" : "search-input"}
         />
         <input
           type="tel"
@@ -93,14 +94,14 @@ export const PaymentPage: FC = () => {
           value={cardNumber}
           onChange={(e) => setCardNumber(e.target.value)}
         />
-        {paymentError && <p style={{ color: 'red', marginTop: '8px' }}>{paymentError}</p>}
+        {paymentError && <p className="payment-error">{paymentError}</p>}
       </div>
 
-      <div style={{ marginTop: 24 }}>
+      <div className="payment-actions">
         <button className="btn" onClick={handlePayment}>
           Pagar y Confirmar
         </button>
-        <Link to="/cart" className="btn secondary" style={{ marginLeft: 12 }}>
+        <Link to="/cart" className="btn secondary payment-back-link">
           Volver al Carrito
         </Link>
       </div>

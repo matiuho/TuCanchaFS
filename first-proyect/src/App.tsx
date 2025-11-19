@@ -3,18 +3,19 @@ import { AppRoutes } from './routes/AppRoutes';
 import { ShoppingCartIcon } from './sharedComponents/components/ShoppingCartIcon';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
+import './styles/components/App.css';
 
 const AuthStatus: FC = () => {
   const { user, logout } = useAuth();
   if (user) return (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <div style={{ color: 'white' }}>Hola, {user.email}</div>
+    <div className="auth-status">
+      <div className="auth-status-user">Hola, {user.email}</div>
       <button className="btn small" onClick={logout}>Salir</button>
       <Link to="/cart"><ShoppingCartIcon /></Link>
     </div>
   );
   return (
-    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+    <div className="auth-status-guest">
       <Link to="/login" className="topbar-btn small">Login</Link>
       <Link to="/register" className="topbar-btn secondary small">Register</Link>
       <Link to="/cart"><ShoppingCartIcon /></Link>
@@ -39,7 +40,7 @@ const App: FC = () => {
               <Link to="/contact">Contacto</Link>
             </nav>
           </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div className="topbar-actions">
             <AuthStatus />
           </div>
         </header>

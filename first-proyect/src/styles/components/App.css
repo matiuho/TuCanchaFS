@@ -1,0 +1,23 @@
+/* App Component Styles */
+
+.auth-status {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.auth-status-user {
+  color: white;
+}
+
+.auth-status-guest {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}

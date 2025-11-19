@@ -1,0 +1,24 @@
+/* ConfirmationPage Styles */
+
+.confirmation-page {
+  padding-top: 48px;
+  text-align: center;
+}
+
+.confirmation-icon {
+  font-size: 48px;
+}
+
+.confirmation-title {
+  margin-top: 16px;
+}
+
+.confirmation-message {
+  color: var(--muted);
+  max-width: 400px;
+  margin: 8px auto 0;
+}
+
+.confirmation-actions {
+  margin-top: 24px;
+}

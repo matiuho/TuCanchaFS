@@ -2,6 +2,7 @@ import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import '../styles/pages/LoginPage.css';
 
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState('');
@@ -49,7 +50,7 @@ export const LoginPage: FC = () => {
 
           {error && (
             <div className="auth-error">
-              {error} <Link to="/register" style={{ marginLeft: 8, color: 'var(--topbar)', fontWeight: 700 }}>Registrarse</Link>
+              {error} <Link to="/register" className="login-error-link">Registrarse</Link>
             </div>
           )}
 
@@ -58,7 +59,7 @@ export const LoginPage: FC = () => {
             <Link to="/register" className="btn secondary">Register</Link>
           </div>
         </form>
-        <div style={{ marginTop: 12, color: 'var(--muted)' }}>
+        <div className="login-demo-info">
           <p>Demo user: demo@tucancha.test / demo1234</p>
           <p>Admin user: admin@tucancha.com / admin123</p>
         </div>

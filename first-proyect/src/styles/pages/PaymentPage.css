@@ -1,0 +1,39 @@
+/* PaymentPage Styles */
+
+.payment-page {
+  padding-top: 48px;
+  text-align: center;
+}
+
+.payment-subtitle {
+  color: var(--muted);
+  max-width: 400px;
+  margin: 8px auto 0;
+}
+
+.payment-form {
+  margin-top: 24px;
+  max-width: 400px;
+  margin: 24px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-email-readonly {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.payment-error {
+  color: red;
+  margin-top: 8px;
+}
+
+.payment-actions {
+  margin-top: 24px;
+}
+
+.payment-back-link {
+  margin-left: 12px;
+}

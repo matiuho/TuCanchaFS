@@ -1,0 +1,67 @@
+/* HomePage Styles */
+
+.home-header {
+  margin-bottom: 18px;
+}
+
+.home-title {
+  text-align: center;
+  margin: 0;
+}
+
+.home-subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.home-search-section {
+  margin-top: 24px;
+}
+
+.home-search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.home-search-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.home-loading {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.home-main {
+  margin-top: 10px;
+}
+
+.home-section-title {
+  margin: 6px 0;
+  text-align: center;
+}
+
+.home-empty-message {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.home-footer {
+  margin-top: 28px;
+  padding: 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-footer-info {
+  color: var(--muted);
+}
+
+.home-footer-copyright {
+  color: var(--muted);
+}
