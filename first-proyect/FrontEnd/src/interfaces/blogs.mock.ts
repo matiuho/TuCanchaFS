@@ -1,5 +1,5 @@
 // src/mock-data/blogs.mock.ts
-import type { BlogPost } from '../interfaces/blog.interface';
+import type { BlogPost } from './blog.interface';
 
 export const mockBlogs: BlogPost[] = [
   {
