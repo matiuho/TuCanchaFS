@@ -20,8 +20,8 @@ export const LoginPage: FC = () => {
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRe.test(trimmed)) return setError('Introduce una dirección de correo válida.');
 
-    const ok = auth.login(trimmed, password);
-    if (ok) {
+    const result = await auth.login(trimmed, password);
+    if (result.success) {
       if (auth.isAdmin()) {
         // Si es admin, redirige a la página de administración (canchas)
         navigate('/admin/canchas');
@@ -30,7 +30,7 @@ export const LoginPage: FC = () => {
         navigate('/');
       }
     } else {
-      setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
+      setError(result.message || 'Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
     }
   };
 

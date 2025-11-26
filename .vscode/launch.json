@@ -1,0 +1,52 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "AuthServiceApplication",
+            "request": "launch",
+            "mainClass": "com.example.Auth_Service.AuthServiceApplication",
+            "projectName": "Auth_Service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AuthServiceApplication<Auth_Service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.Auth._Service.AuthServiceApplication",
+            "projectName": "Auth_Service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=53315 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Auth_Service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CanchasServiceApplication<Canchas_Service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.Canchas_Service.CanchasServiceApplication",
+            "projectName": "Canchas_Service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PagoServiceApplication<Pago_Service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.Pago_Service.PagoServiceApplication",
+            "projectName": "Pago_Service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ReservasServiceApplication<Reservas_Service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.Reservas_Service.ReservasServiceApplication",
+            "projectName": "Reservas_Service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

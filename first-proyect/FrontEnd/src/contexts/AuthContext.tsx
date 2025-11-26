@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
+import * as authService from '../services/authService';
+import { getUserData, isAuthenticated } from '../services/api.config';
 
 type User = { 
   email: string; 
@@ -9,93 +11,109 @@ type User = {
 
 type AuthContextShape = {
   user: User | null;
-  login: (email: string, password: string) => boolean;
-  logout: () => void;
-  register: (email: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
+  logout: () => Promise<void>;
+  register: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
   isAdmin: () => boolean;
+  loading: boolean;
 };
-
-const KEY_USERS = 'tuCancha_users';
-const KEY_CURRENT = 'tuCancha_currentUser';
-
-const predefinedUsers = [
-  { email: 'admin@tucancha.com', password: 'admin123', role: 'admin' as const },
-  { email: 'demo@tucancha.test', password: 'demo1234', role: 'user' as const }
-];
 
 const AuthContext = createContext<AuthContextShape | undefined>(undefined);
 
-function readUsers(): Array<{ email: string; password: string; role: 'admin' | 'user' }> {
-  try {
-    const raw = localStorage.getItem(KEY_USERS);
-    if (!raw) {
-      // seed with predefined users
-      localStorage.setItem(KEY_USERS, JSON.stringify(predefinedUsers));
-      return predefinedUsers;
-    }
-    return JSON.parse(raw) as Array<{ email: string; password: string; role: 'admin' | 'user' }>;
-  } catch {
-    return predefinedUsers;
-  }
-}
-
-function writeUsers(users: Array<{ email: string; password: string; role: 'admin' | 'user' }>) {
-  localStorage.setItem(KEY_USERS, JSON.stringify(users));
-}
-
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  // Asegurarse de que los usuarios predefinidos estén en localStorage
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Check authentication status on mount
   useEffect(() => {
-    const users = readUsers();
-    if (!users.some(u => u.email === 'admin@tucancha.com')) {
-      localStorage.clear(); // Limpiar localStorage para forzar la reinicialización
-      writeUsers(predefinedUsers);
-    }
+    const checkAuth = () => {
+      if (isAuthenticated()) {
+        const userData = getUserData();
+        if (userData) {
+          setUser({
+            email: userData.email,
+            role: userData.role === 'ADMIN' ? 'admin' : 'user',
+          });
+        }
+      }
+      setLoading(false);
+    };
+    
+    checkAuth();
   }, []);
 
-  const [user, setUser] = useState<User | null>(() => {
+  const login = async (email: string, password: string) => {
     try {
-      const raw = localStorage.getItem(KEY_CURRENT);
-      return raw ? (JSON.parse(raw) as User) : null;
-    } catch {
-      return null;
+      const response = await authService.login(email, password);
+      
+      if (response.success && response.email && response.role) {
+        setUser({
+          email: response.email,
+          role: response.role === 'ADMIN' ? 'admin' : 'user',
+        });
+        
+        return {
+          success: true,
+          message: response.message || 'Login exitoso',
+        };
+      }
+      
+      return {
+        success: false,
+        message: response.message || 'Credenciales inválidas',
+      };
+    } catch (error: any) {
+      console.error('Login error:', error);
+      return {
+        success: false,
+        message: error.message || 'Error de conexión con el servidor',
+      };
     }
-  });
-
-  useEffect(() => {
-    if (user) localStorage.setItem(KEY_CURRENT, JSON.stringify(user));
-    else localStorage.removeItem(KEY_CURRENT);
-  }, [user]);
-
-  const login = (email: string, password: string) => {
-    const users = readUsers();
-    console.log('Usuarios disponibles:', users); // Para debug
-    const match = users.find((u) => u.email === email && u.password === password);
-    if (match) {
-      setUser({ email: match.email, role: match.role });
-      return true;
-    }
-    console.log('Usuario no encontrado para:', email); // Para debug
-    return false;
   };
 
-  const logout = () => setUser(null);
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+    }
+  };
 
-  const register = (email: string, password: string) => {
-    const users = readUsers();
-    const exists = users.find((u) => u.email === email);
-    if (exists) return false;
-    // New users are always registered as regular users
-    const next = [...users, { email, password, role: 'user' as const }];
-    writeUsers(next);
-    // No iniciar sesión automáticamente; el usuario debe loguearse luego
-    return true;
+  const register = async (email: string, password: string) => {
+    try {
+      const response = await authService.register(email, password, 'user');
+      
+      if (response.success && response.email && response.role) {
+        setUser({
+          email: response.email,
+          role: response.role === 'ADMIN' ? 'admin' : 'user',
+        });
+        
+        return {
+          success: true,
+          message: response.message || 'Registro exitoso',
+        };
+      }
+      
+      return {
+        success: false,
+        message: response.message || 'Error al registrar usuario',
+      };
+    } catch (error: any) {
+      console.error('Register error:', error);
+      return {
+        success: false,
+        message: error.message || 'Error de conexión con el servidor',
+      };
+    }
   };
 
   const isAdmin = () => user?.role === 'admin';
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, isAdmin }}>
+    <AuthContext.Provider value={{ user, login, logout, register, isAdmin, loading }}>
       {children}
     </AuthContext.Provider>
   );

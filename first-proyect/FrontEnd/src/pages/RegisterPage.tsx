@@ -12,7 +12,7 @@ export const RegisterPage: FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
     // Validaciones básicas
@@ -22,15 +22,18 @@ export const RegisterPage: FC = () => {
     if (password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres.');
     if (!/[A-Z]/.test(password)) return setError('La contraseña debe contener al menos una letra mayúscula.');
 
-    const ok = auth.register(trimmed, password);
-    if (ok) {
+    const result = await auth.register(trimmed, password);
+    if (result.success) {
       showToast({
         type: 'success',
         title: 'Cuenta creada',
-        message: 'Tu cuenta fue creada con éxito. Inicia sesión para continuar.'
+        message: 'Tu cuenta fue creada con éxito. Ya puedes empezar a reservar canchas.'
       });
-      navigate('/login');
-    } else setError('El usuario ya existe, intenta iniciar sesión.');
+      // El usuario ya está logueado automáticamente
+      navigate('/');
+    } else {
+      setError(result.message || 'Error al crear la cuenta. Por favor, intenta nuevamente.');
+    }
   };
 
   return (
