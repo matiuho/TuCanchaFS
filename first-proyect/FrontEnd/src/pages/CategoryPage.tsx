@@ -1,13 +1,32 @@
 // src/pages/CategoryPage.tsx
-import type { FC } from 'react';
+import { useState, useEffect, type FC } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { readCourts } from '../utils/courtsStorage';
+import { getAllCanchas } from '../services/canchasService';
 import { CourtCard } from '../canchas/components/CourtCard';
+import type { CanchaProps } from '../interfaces/cancha.interface';
 
 export const CategoryPage: FC = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
+  const [canchas, setCanchas] = useState<CanchaProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredCanchas = readCourts().filter(
+  useEffect(() => {
+    loadCanchas();
+  }, []);
+
+  const loadCanchas = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllCanchas();
+      setCanchas(data);
+    } catch (error) {
+      console.error('Error al cargar canchas:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const filteredCanchas = canchas.filter(
     (cancha) => cancha.tipo.toLowerCase() === categoryName?.toLowerCase()
   );
 

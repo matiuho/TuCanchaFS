@@ -1,10 +1,10 @@
 // ===================================
 // src/pages/HomePage.tsx (Controlador Principal)
 // ===================================
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { FC } from 'react';
 import { CourtCard } from '../canchas/components/CourtCard';
-import { readCourts } from '../utils/courtsStorage';
+import { getAllCanchas } from '../services/canchasService';
 import type { CanchaProps } from '../interfaces/cancha.interface';
 import { SearchBar } from '../sharedComponents/components/SearchBar';
 import '../styles/pages/HomePage.css';
@@ -21,22 +21,31 @@ const searchCanchas = (canchas: CanchaProps[], query: string = ''): CanchaProps[
 };
 
 export const HomePage: FC = () => {
-    const [canchas, setCanchas] = useState<CanchaProps[]>(readCourts());
-    const [isLoading, setIsLoading] = useState(false);
+    const [allCanchas, setAllCanchas] = useState<CanchaProps[]>([]);
+    const [canchas, setCanchas] = useState<CanchaProps[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const handleSearch = useCallback((query: string) => {
-        setIsLoading(true);
+    useEffect(() => {
+        loadCanchas();
+    }, []);
+
+    const loadCanchas = async () => {
         try {
-            const base = readCourts();
-            const filteredCanchas = searchCanchas(base, query);
-            setCanchas(filteredCanchas);
+            setIsLoading(true);
+            const data = await getAllCanchas();
+            setAllCanchas(data);
+            setCanchas(data);
         } catch (error) {
-            console.error('Error al buscar canchas:', error);
-            setCanchas(readCourts());
+            console.error('Error al cargar canchas:', error);
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    };
+
+    const handleSearch = useCallback((query: string) => {
+        const filteredCanchas = searchCanchas(allCanchas, query);
+        setCanchas(filteredCanchas);
+    }, [allCanchas]);
 
     return (
         <div className="container">

@@ -1,27 +1,32 @@
 import { useEffect, useMemo, useState, type FC, type FormEvent } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-
-type LocalUser = { email: string; password: string; role: 'admin' | 'user' };
-
-const KEY_USERS = 'tuCancha_users';
+import { getAllUsers, updateUser, deleteUser as deleteUserApi, type User } from '../../services/usersService';
 
 export const PerfilPage: FC = () => {
     const { user, logout } = useAuth();
-    const [users, setUsers] = useState<LocalUser[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [editing, setEditing] = useState<string | null>(null);
     const [form, setForm] = useState<{ password: string; role: 'admin' | 'user' }>({ password: '', role: 'user' });
 
-    // Cargar usuarios desde localStorage
+    // Cargar usuarios desde el backend
     useEffect(() => {
-        try {
-            const raw = localStorage.getItem(KEY_USERS);
-            if (raw) setUsers(JSON.parse(raw) as LocalUser[]);
-        } catch { /* ignore parse error */ }
+        loadUsers();
     }, []);
 
-    const saveUsers = (next: LocalUser[]) => {
-        setUsers(next);
-        localStorage.setItem(KEY_USERS, JSON.stringify(next));
+    const loadUsers = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await getAllUsers();
+            setUsers(data);
+        } catch (err: any) {
+            setError(err.message || 'Error al cargar usuarios');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const startEdit = (email: string) => {
@@ -36,31 +41,59 @@ export const PerfilPage: FC = () => {
         setForm({ password: '', role: 'user' });
     };
 
-    const submitEdit = (e: FormEvent) => {
+    const submitEdit = async (e: FormEvent) => {
         e.preventDefault();
         if (!editing) return;
-        const next = users.map(u => u.email === editing ? { ...u, password: form.password, role: form.role } : u);
-        saveUsers(next);
-        // Si el usuario actual fue modificado en rol y pierde permisos, opcionalmente cerrar sesión
-        if (user?.email === editing) {
-            // Actualizar sesión si cambia el rol
-            // Estrategia simple: forzar re-login para refrescar rol
-            logout();
+
+        try {
+            setError(null);
+            await updateUser(editing, { password: form.password, role: form.role });
+            // Recargar usuarios
+            await loadUsers();
+            
+            if (user?.email === editing && user.role !== form.role) {
+                // Si cambió el rol del usuario actual, forzar re-login
+                logout();
+            }
+            cancelEdit();
+            alert('Usuario actualizado exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al actualizar usuario');
+            alert(err.message || 'Error al actualizar usuario');
         }
-        cancelEdit();
     };
 
-    const removeUser = (email: string) => {
+    const removeUser = async (email: string) => {
         if (!confirm(`¿Eliminar usuario ${email}?`)) return;
-        const next = users.filter(u => u.email !== email);
-        saveUsers(next);
-        if (user?.email === email) logout();
+
+        try {
+            setError(null);
+            await deleteUserApi(email);
+            setUsers(prev => prev.filter(u => u.email !== email));
+            if (user?.email === email) logout();
+            alert('Usuario eliminado exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al eliminar usuario');
+            alert(err.message || 'Error al eliminar usuario');
+        }
     };
 
     const totalAdmins = useMemo(() => users.filter(u => u.role === 'admin').length, [users]);
 
     return (
         <div className="admin-page">
+            {error && (
+                <div style={{ 
+                    backgroundColor: '#fee', 
+                    padding: '12px', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px',
+                    color: '#c00'
+                }}>
+                    {error}
+                </div>
+            )}
+
             <div className="admin-header">
                 <h1>Perfil y Usuarios</h1>
             </div>
@@ -73,6 +106,11 @@ export const PerfilPage: FC = () => {
                 </div>
             </div>
 
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                    Cargando usuarios...
+                </div>
+            ) : (
             <div className="profile-card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h2>Usuarios Registrados</h2>
@@ -138,6 +176,7 @@ export const PerfilPage: FC = () => {
                     </table>
                 </div>
             </div>
+            )}
         </div>
     );
 };

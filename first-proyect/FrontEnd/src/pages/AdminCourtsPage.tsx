@@ -1,30 +1,58 @@
 import { useEffect, useState, type FC } from 'react';
 import type { CanchaProps } from '../interfaces/cancha.interface';
 import { CourtForm } from '../canchas/components/CourtForm';
-import { readCourts as readCourtsFromStorage, writeCourts as writeCourtsToStorage } from '../utils/courtsStorage';
-
-// Centralizamos lectura/escritura desde util para coherencia en toda la app
-const readCourts = (): CanchaProps[] => readCourtsFromStorage();
-const writeCourts = (courts: CanchaProps[]) => writeCourtsToStorage(courts);
+import { getAllCanchas, createCancha, updateCancha, deleteCancha as deleteCanchaApi } from '../services/canchasService';
 
 export const AdminCourtsPage: FC = () => {
-    const [canchas, setCanchas] = useState<CanchaProps[]>(() => readCourts());
+    const [canchas, setCanchas] = useState<CanchaProps[]>([]);
     const [editingCourt, setEditingCourt] = useState<CanchaProps | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
+    // Cargar canchas desde el backend al montar
     useEffect(() => {
-        writeCourts(canchas);
-    }, [canchas]);
+        loadCanchas();
+    }, []);
 
-    const handleAddCourt = (newCourt: Omit<CanchaProps, 'id'>) => {
-        const base = canchas.length ? Math.max(...canchas.map(c => c.id)) : 0;
-        const newId = base + 1;
-        const courtToAdd = { ...newCourt, id: newId };
-        setCanchas(prev => [...prev, courtToAdd]);
+    const loadCanchas = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await getAllCanchas();
+            setCanchas(data);
+        } catch (err) {
+            setError('Error al cargar canchas');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleDeleteCourt = (id: number) => {
-        if (window.confirm('¿Estás seguro de que quieres eliminar esta cancha?')) {
+    const handleAddCourt = async (newCourt: Omit<CanchaProps, 'id'>) => {
+        try {
+            setError(null);
+            const created = await createCancha(newCourt);
+            setCanchas(prev => [...prev, created]);
+            alert('Cancha creada exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al crear cancha');
+            alert(err.message || 'Error al crear cancha');
+        }
+    };
+
+    const handleDeleteCourt = async (id: number) => {
+        if (!window.confirm('¿Estás seguro de que quieres eliminar esta cancha?')) {
+            return;
+        }
+
+        try {
+            setError(null);
+            await deleteCanchaApi(id);
             setCanchas(prev => prev.filter(cancha => cancha.id !== id));
+            alert('Cancha eliminada exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al eliminar cancha');
+            alert(err.message || 'Error al eliminar cancha');
         }
     };
 
@@ -32,19 +60,43 @@ export const AdminCourtsPage: FC = () => {
         setEditingCourt(cancha);
     };
 
-    const handleUpdateCourt = (updatedCourt: Omit<CanchaProps, 'id'>) => {
+    const handleUpdateCourt = async (updatedCourt: Omit<CanchaProps, 'id'>) => {
         if (!editingCourt) return;
         
-        setCanchas(prev => prev.map(cancha => 
-            cancha.id === editingCourt.id 
-                ? { ...updatedCourt, id: editingCourt.id }
-                : cancha
-        ));
-        setEditingCourt(null);
+        try {
+            setError(null);
+            const updated = await updateCancha(editingCourt.id, updatedCourt);
+            setCanchas(prev => prev.map(cancha => 
+                cancha.id === editingCourt.id ? updated : cancha
+            ));
+            setEditingCourt(null);
+            alert('Cancha actualizada exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al actualizar cancha');
+            alert(err.message || 'Error al actualizar cancha');
+        }
     };
 
     return (
         <div className="admin-page">
+            {error && (
+                <div style={{ 
+                    backgroundColor: '#fee', 
+                    padding: '12px', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px',
+                    color: '#c00'
+                }}>
+                    {error}
+                </div>
+            )}
+
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                    Cargando canchas...
+                </div>
+            ) : (
+                <>
             <div className="admin-header">
                 <h1>Administración de Canchas</h1>
                 <div style={{ display: 'flex', gap: 8 }}>
@@ -115,6 +167,8 @@ export const AdminCourtsPage: FC = () => {
                     </div>
                 </div>
             </div>
+            </>
+            )}
         </div>
     );
 };

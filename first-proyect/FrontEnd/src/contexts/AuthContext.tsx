@@ -32,7 +32,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         if (userData) {
           setUser({
             email: userData.email,
-            role: userData.role === 'ADMIN' ? 'admin' : 'user',
+            role: userData.role.toLowerCase() === 'admin' ? 'admin' : 'user',
           });
         }
       }
@@ -49,7 +49,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       if (response.success && response.email && response.role) {
         setUser({
           email: response.email,
-          role: response.role === 'ADMIN' ? 'admin' : 'user',
+          role: response.role.toLowerCase() === 'admin' ? 'admin' : 'user',
         });
         
         return {

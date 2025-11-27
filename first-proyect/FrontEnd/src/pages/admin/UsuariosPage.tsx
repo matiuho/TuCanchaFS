@@ -1,33 +1,35 @@
 import { useEffect, useMemo, useState, type FC, type FormEvent } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-
-type LocalUser = { email: string; password: string; role: 'admin' | 'user' };
-const KEY_USERS = 'tuCancha_users';
-
-function readUsers(): LocalUser[] {
-    try {
-        const raw = localStorage.getItem(KEY_USERS);
-        if (!raw) return [];
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        return [];
-    }
-}
-
-function writeUsers(users: LocalUser[]) {
-    localStorage.setItem(KEY_USERS, JSON.stringify(users));
-}
+import { getAllUsers, createUser, updateUser, deleteUser as deleteUserApi, type User } from '../../services/usersService';
 
 export const UsuariosPage: FC = () => {
     const { user: sessionUser, logout } = useAuth();
-    const [users, setUsers] = useState<LocalUser[]>(() => readUsers());
+    const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [editing, setEditing] = useState<string | null>(null);
     const [form, setForm] = useState<{ password: string; role: 'admin' | 'user' }>({ password: '', role: 'user' });
     const [query, setQuery] = useState('');
     const [newUser, setNewUser] = useState<{ email: string; password: string; role: 'admin' | 'user' }>({ email: '', password: '', role: 'user' });
 
-    useEffect(() => { writeUsers(users); }, [users]);
+    // Cargar usuarios al montar
+    useEffect(() => {
+        loadUsers();
+    }, []);
+
+    const loadUsers = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await getAllUsers();
+            setUsers(data);
+        } catch (err: any) {
+            setError(err.message || 'Error al cargar usuarios');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -47,27 +49,63 @@ export const UsuariosPage: FC = () => {
         setForm({ password: '', role: 'user' });
     };
 
-    const submitEdit = (e: FormEvent) => {
+    const submitEdit = async (e: FormEvent) => {
         e.preventDefault();
         if (!editing) return;
-        const next = users.map(u => u.email === editing ? { ...u, password: form.password, role: form.role } : u);
-        setUsers(next);
-        if (sessionUser?.email === editing && sessionUser.role !== form.role) {
-            // si cambió el rol del usuario actual, forzar re-login para refrescar permisos
-            logout();
+
+        try {
+            setError(null);
+            await updateUser(editing, { password: form.password, role: form.role });
+            // Recargar usuarios
+            await loadUsers();
+            
+            if (sessionUser?.email === editing && sessionUser.role !== form.role) {
+                // Si cambió el rol del usuario actual, forzar re-login
+                logout();
+            }
+            cancelEdit();
+            alert('Usuario actualizado exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al actualizar usuario');
+            alert(err.message || 'Error al actualizar usuario');
         }
-        cancelEdit();
     };
 
-    const removeUser = (email: string) => {
+    const removeUser = async (email: string) => {
         if (!confirm(`¿Eliminar usuario ${email}?`)) return;
-        const next = users.filter(u => u.email !== email);
-        setUsers(next);
-        if (sessionUser?.email === email) logout();
+
+        try {
+            setError(null);
+            await deleteUserApi(email);
+            setUsers(prev => prev.filter(u => u.email !== email));
+            if (sessionUser?.email === email) logout();
+            alert('Usuario eliminado exitosamente');
+        } catch (err: any) {
+            setError(err.message || 'Error al eliminar usuario');
+            alert(err.message || 'Error al eliminar usuario');
+        }
     };
 
     return (
         <div className="admin-page">
+            {error && (
+                <div style={{ 
+                    backgroundColor: '#fee', 
+                    padding: '12px', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px',
+                    color: '#c00'
+                }}>
+                    {error}
+                </div>
+            )}
+
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                    Cargando usuarios...
+                </div>
+            ) : (
+                <>
             <div className="admin-header">
                 <h1>Gestión de Usuarios</h1>
                 <input
@@ -82,15 +120,23 @@ export const UsuariosPage: FC = () => {
                 <div className="profile-card" style={{ marginTop: 0 }}>
                     <h2 style={{ marginTop: 0 }}>Crear nuevo usuario</h2>
                     <form
-                        onSubmit={(e) => {
+                        onSubmit={async (e) => {
                             e.preventDefault();
                             const email = newUser.email.trim().toLowerCase();
                             if (!email || !newUser.password) return alert('Email y password son requeridos');
                             if (users.some(u => u.email.toLowerCase() === email)) return alert('Ya existe un usuario con ese email');
-                            const toAdd: LocalUser = { email, password: newUser.password, role: newUser.role };
-                            const next = [...users, toAdd];
-                            setUsers(next);
-                            setNewUser({ email: '', password: '', role: 'user' });
+                            
+                            try {
+                                setError(null);
+                                await createUser({ email, password: newUser.password, role: newUser.role });
+                                // Recargar usuarios
+                                await loadUsers();
+                                setNewUser({ email: '', password: '', role: 'user' });
+                                alert('Usuario creado exitosamente');
+                            } catch (err: any) {
+                                setError(err.message || 'Error al crear usuario');
+                                alert(err.message || 'Error al crear usuario');
+                            }
                         }}
                         className="court-form"
                     >
@@ -192,6 +238,8 @@ export const UsuariosPage: FC = () => {
                     )}
                 </div>
             </div>
+            </>
+            )}
         </div>
     );
 };
