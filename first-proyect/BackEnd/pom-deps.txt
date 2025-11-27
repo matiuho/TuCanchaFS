@@ -1,4 +1,4 @@
-﻿<!-- ================================================================ -->
+<!-- ================================================================ -->
 <!-- DEPENDENCIAS PARA TESTING (JUnit 5 + Mockito + Spring Test)     -->
 <!-- Copiar este bloque completo en la sección <dependencies>        -->
 <!-- de cada pom.xml de los 4 módulos                                -->
