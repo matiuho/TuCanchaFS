@@ -27,10 +27,10 @@ export const RegisterPage: FC = () => {
       showToast({
         type: 'success',
         title: 'Cuenta creada',
-        message: 'Tu cuenta fue creada con éxito. Ya puedes empezar a reservar canchas.'
+        message: 'Tu cuenta fue creada con éxito. Por favor inicia sesión para continuar.'
       });
-      // El usuario ya está logueado automáticamente
-      navigate('/');
+      // Redirigir al login para que el usuario inicie sesión manualmente
+      navigate('/login');
     } else {
       setError(result.message || 'Error al crear la cuenta. Por favor, intenta nuevamente.');
     }

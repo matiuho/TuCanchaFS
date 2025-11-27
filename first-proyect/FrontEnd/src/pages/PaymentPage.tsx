@@ -3,63 +3,103 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/CartContexts';
+import { createReserva } from '../services/reservasService';
+import { procesarPago } from '../services/pagosService';
+import { useToast } from '../sharedComponents/components/ToastProvider';
 import '../styles/pages/PaymentPage.css';
 
 const VALID_CARD = '1234123412341234';
-const RESERVAS_KEY = 'reservas';
-
-// Función para guardar la reserva en localStorage
-const saveReservation = (nombre: string, email: string) => {
-  try {
-    console.log('Attempting to save reservation...');
-    const raw = localStorage.getItem(RESERVAS_KEY);
-    const existingReservations = raw ? JSON.parse(raw) : [];
-
-    // TODO: Reemplazar con datos reales de la reserva desde el carrito/estado
-    const newReservation = {
-      id: Date.now(),
-      nombre: nombre, // Usamos el nombre del formulario
-      fecha: new Date().toISOString().split('T')[0], // Fecha actual como ejemplo
-      hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Hora actual
-      cancha: 'Cancha Ejemplo', // Nombre de la cancha como ejemplo
-    };
-
-    console.log('New reservation to save:', newReservation);
-    const nextReservations = [newReservation, ...existingReservations];
-    localStorage.setItem(RESERVAS_KEY, JSON.stringify(nextReservations));
-    console.log('Reservation saved successfully to localStorage.');
-  } catch (error) {
-    console.error('Error al guardar la reserva:', error);
-  }
-};
 
 export const PaymentPage: FC = () => {
   const { user } = useAuth();
+  const { carrito, clearCart, subtotal } = useCart();
+  const { showToast } = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState(user?.email || '');
   const [cardNumber, setCardNumber] = useState('');
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setPaymentError(null);
+    setLoading(true);
 
     // Validar que nombre y email no estén vacíos
     if (!name.trim() || !email.trim()) {
       setPaymentError('Por favor, ingresa tu nombre y correo electrónico.');
+      setLoading(false);
       return;
     }
 
-    // Comparamos el número de tarjeta sin espacios
-    if (cardNumber.replace(/\s/g, '') === VALID_CARD) {
-      console.log('Payment successful. Calling saveReservation...');
-      saveReservation(name, email);
+    // Validar número de tarjeta
+    if (cardNumber.replace(/\s/g, '') !== VALID_CARD) {
+      setPaymentError('Número de tarjeta inválido.');
+      setLoading(false);
+      return;
+    }
+
+    // Validar que haya items en el carrito
+    if (carrito.length === 0) {
+      setPaymentError('No hay reservas en el carrito.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      console.log('Processing reservations and payment...');
+      
+      // Crear cada reserva en el backend
+      const reservaIds: number[] = [];
+      for (const item of carrito) {
+        const reservaData = {
+          nombre: name,
+          email: email,
+          fecha: new Date().toISOString().split('T')[0], // Fecha actual
+          hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          cancha: item.nombre,
+          canchaId: item.id,
+          cantidadHoras: item.quantity,
+          precioTotal: item.enOferta && item.precioOferta 
+            ? item.precioOferta * item.quantity 
+            : item.precioHora * item.quantity,
+          estado: 'PENDIENTE' as const
+        };
+
+        const reservaResult = await createReserva(reservaData);
+        if (reservaResult && reservaResult.id) {
+          reservaIds.push(reservaResult.id);
+          console.log('Reserva creada:', reservaResult);
+        }
+      }
+
+      // Procesar el pago
+      const pagoData = {
+        nombre: name,
+        email: email,
+        cardNumber: cardNumber.replace(/\s/g, ''),
+        monto: subtotal,
+        reservaId: reservaIds[0], // Primera reserva del carrito
+        estado: 'COMPLETADO' as const
+      };
+
+      const pagoResult = await procesarPago(pagoData);
+      console.log('Pago procesado:', pagoResult);
+
+      showToast({
+        type: 'success',
+        title: 'Pago exitoso',
+        message: 'Tu reserva ha sido confirmada.'
+      });
+
+      clearCart();
       navigate('/confirmation');
-    } else {
-      console.log('Payment failed: Invalid card number.');
-      setPaymentError((prev) =>
-        prev ? `${prev} Y el número de tarjeta es inválido.` : 'Número de tarjeta inválido.'
-      );
+    } catch (error: any) {
+      console.error('Error processing payment:', error);
+      setPaymentError(error.message || 'Error al procesar el pago. Intenta nuevamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,11 +121,10 @@ export const PaymentPage: FC = () => {
         <input
           type="email"
           placeholder="Correo electrónico"
-          className="search-input"
+          className={user ? "search-input payment-email-readonly" : "search-input"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           readOnly={!!user}
-          className={user ? "search-input payment-email-readonly" : "search-input"}
         />
         <input
           type="tel"
@@ -98,8 +137,8 @@ export const PaymentPage: FC = () => {
       </div>
 
       <div className="payment-actions">
-        <button className="btn" onClick={handlePayment}>
-          Pagar y Confirmar
+        <button className="btn" onClick={handlePayment} disabled={loading}>
+          {loading ? 'Procesando...' : 'Pagar y Confirmar'}
         </button>
         <Link to="/cart" className="btn secondary payment-back-link">
           Volver al Carrito

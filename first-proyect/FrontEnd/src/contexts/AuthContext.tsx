@@ -85,15 +85,11 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       const response = await authService.register(email, password, 'user');
       
-      if (response.success && response.email && response.role) {
-        setUser({
-          email: response.email,
-          role: response.role === 'ADMIN' ? 'admin' : 'user',
-        });
-        
+      if (response.success) {
+        // NO hacer auto-login, solo confirmar que el registro fue exitoso
         return {
           success: true,
-          message: response.message || 'Registro exitoso',
+          message: response.message || 'Cuenta creada exitosamente. Por favor inicia sesión.',
         };
       }
       
