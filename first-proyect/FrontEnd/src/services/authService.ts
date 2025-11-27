@@ -55,7 +55,7 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 /**
  * Register new user
  */
-export const register = async (email: string, password: string, role: string = 'USER'): Promise<AuthResponse> => {
+export const register = async (email: string, password: string, role: string = 'user'): Promise<AuthResponse> => {
   try {
     const response = await fetch(`${API_CONFIG.AUTH_SERVICE}/register`, {
       method: 'POST',

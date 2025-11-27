@@ -8,9 +8,9 @@ export const UsuariosPage: FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [editing, setEditing] = useState<string | null>(null);
-    const [form, setForm] = useState<{ password: string; role: 'ADMIN' | 'USER' }>({ password: '', role: 'USER' });
+    const [form, setForm] = useState<{ password: string; role: 'admin' | 'user' }>({ password: '', role: 'user' });
     const [query, setQuery] = useState('');
-    const [newUser, setNewUser] = useState<{ email: string; password: string; role: 'ADMIN' | 'USER' }>({ email: '', password: '', role: 'USER' });
+    const [newUser, setNewUser] = useState<{ email: string; password: string; role: 'admin' | 'user' }>({ email: '', password: '', role: 'user' });
 
     // Cargar usuarios al montar
     useEffect(() => {
@@ -46,7 +46,7 @@ export const UsuariosPage: FC = () => {
 
     const cancelEdit = () => {
         setEditing(null);
-        setForm({ password: '', role: 'USER' });
+        setForm({ password: '', role: 'user' });
     };
 
     const submitEdit = async (e: FormEvent) => {
@@ -131,7 +131,7 @@ export const UsuariosPage: FC = () => {
                                 await createUser({ email, password: newUser.password, role: newUser.role });
                                 // Recargar usuarios
                                 await loadUsers();
-                                setNewUser({ email: '', password: '', role: 'USER' });
+                                setNewUser({ email: '', password: '', role: 'user' });
                                 alert('Usuario creado exitosamente');
                             } catch (err: any) {
                                 setError(err.message || 'Error al crear usuario');
@@ -165,10 +165,10 @@ export const UsuariosPage: FC = () => {
                             <select
                                 className="form-input"
                                 value={newUser.role}
-                                onChange={(e) => setNewUser(prev => ({ ...prev, role: e.target.value as 'ADMIN' | 'USER' }))}
+                                onChange={(e) => setNewUser(prev => ({ ...prev, role: e.target.value as 'admin' | 'user' }))}
                             >
-                                <option value="USER">Usuario</option>
-                                <option value="ADMIN">Admin</option>
+                                <option value="user">Usuario</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
                         <button type="submit" className="btn">Agregar usuario</button>
@@ -194,11 +194,11 @@ export const UsuariosPage: FC = () => {
                                         {editing === u.email ? (
                                             <select
                                                 value={form.role}
-                                                onChange={(e) => setForm(prev => ({ ...prev, role: e.target.value as 'ADMIN' | 'USER' }))}
+                                                onChange={(e) => setForm(prev => ({ ...prev, role: e.target.value as 'admin' | 'user' }))}
                                                 className="form-input"
                                             >
-                                                <option value="USER">Usuario</option>
-                                                <option value="ADMIN">Admin</option>
+                                                <option value="user">Usuario</option>
+                                                <option value="admin">Admin</option>
                                             </select>
                                         ) : (
                                             <span className="badge">{u.role}</span>

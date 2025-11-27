@@ -52,11 +52,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // Extract role from token
                 String role = jwtUtil.extractRole(jwt);
                 
-                // Create authentication token - Spring Security's hasRole() ya agrega ROLE_ prefix
+                // Create authentication token
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     email, 
                     null, 
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
                 );
                 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

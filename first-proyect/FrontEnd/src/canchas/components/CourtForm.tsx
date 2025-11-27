@@ -70,8 +70,8 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
                     className="form-input"
                 >
                     <option value="">Seleccionar tipo</option>
-                    <option value="FUTBOL">Fútbol</option>
-                    <option value="FUTSAL">Futsal</option>
+                    <option value="Fútbol">Fútbol</option>
+                    <option value="Futsal">Futsal</option>
                 </select>
             </div>
             <div className="form-group">
