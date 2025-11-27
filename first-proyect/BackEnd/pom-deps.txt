@@ -1,0 +1,53 @@
+﻿<!-- ================================================================ -->
+<!-- DEPENDENCIAS PARA TESTING (JUnit 5 + Mockito + Spring Test)     -->
+<!-- Copiar este bloque completo en la sección <dependencies>        -->
+<!-- de cada pom.xml de los 4 módulos                                -->
+<!-- ================================================================ -->
+
+<!-- JUnit 5 API -->
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-api</artifactId>
+    <version>5.9.2</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- JUnit 5 Engine -->
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-engine</artifactId>
+    <version>5.9.2</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- Mockito Core -->
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>5.2.1</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- Mockito JUnit Jupiter Integration -->
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-junit-jupiter</artifactId>
+    <version>5.2.1</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- Spring Test (MockMvc) -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>6.0.0</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- Jackson (para ObjectMapper en tests) -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.15.2</version>
+    <scope>test</scope>
+</dependency>
