@@ -5,14 +5,14 @@ export interface User {
   id?: number;
   email: string;
   password: string;
-  role: 'admin' | 'user';
+  role: 'ADMIN' | 'USER';
 }
 
 // Tipo para crear/actualizar usuario
 export type UserInput = {
   email: string;
   password: string;
-  role: 'admin' | 'user';
+  role: 'ADMIN' | 'USER';
 };
 
 // Helper para headers con JWT

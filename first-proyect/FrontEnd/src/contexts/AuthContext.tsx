@@ -6,7 +6,7 @@ import { getUserData, isAuthenticated } from '../services/api.config';
 
 type User = { 
   email: string; 
-  role: 'admin' | 'user';
+  role: 'ADMIN' | 'USER';
 };
 
 type AuthContextShape = {
@@ -32,7 +32,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         if (userData) {
           setUser({
             email: userData.email,
-            role: userData.role.toLowerCase() === 'admin' ? 'admin' : 'user',
+            role: userData.role.toUpperCase() === 'ADMIN' ? 'ADMIN' : 'USER',
           });
         }
       }
@@ -49,7 +49,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       if (response.success && response.email && response.role) {
         setUser({
           email: response.email,
-          role: response.role.toLowerCase() === 'admin' ? 'admin' : 'user',
+          role: response.role.toUpperCase() === 'ADMIN' ? 'ADMIN' : 'USER',
         });
         
         return {
@@ -106,7 +106,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  const isAdmin = () => user?.role === 'admin';
+  const isAdmin = () => user?.role === 'ADMIN';
 
   return (
     <AuthContext.Provider value={{ user, login, logout, register, isAdmin, loading }}>
