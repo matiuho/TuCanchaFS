@@ -8,7 +8,7 @@ export const PerfilPage: FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [editing, setEditing] = useState<string | null>(null);
-    const [form, setForm] = useState<{ password: string; role: 'admin' | 'user' }>({ password: '', role: 'user' });
+    const [form, setForm] = useState<{ password: string; role: 'ADMIN' | 'USER' }>({ password: '', role: 'USER' });
 
     // Cargar usuarios desde el backend
     useEffect(() => {
@@ -33,12 +33,12 @@ export const PerfilPage: FC = () => {
         const u = users.find(x => x.email === email);
         if (!u) return;
         setEditing(email);
-        setForm({ password: u.password, role: u.role });
+        setForm({ password: '', role: u.role });
     };
 
     const cancelEdit = () => {
         setEditing(null);
-        setForm({ password: '', role: 'user' });
+        setForm({ password: '', role: 'USER' });
     };
 
     const submitEdit = async (e: FormEvent) => {
@@ -47,16 +47,26 @@ export const PerfilPage: FC = () => {
 
         try {
             setError(null);
-            await updateUser(editing, { password: form.password, role: form.role });
+            // Solo enviar los campos que se van a actualizar
+            const updateData: Partial<{ password: string; role: 'ADMIN' | 'USER' }> = { role: form.role };
+            
+            // Solo incluir password si se ingresó uno nuevo
+            if (form.password.trim()) {
+                updateData.password = form.password;
+            }
+            
+            await updateUser(editing, updateData);
             // Recargar usuarios
             await loadUsers();
+            cancelEdit();
             
             if (user?.email === editing && user.role !== form.role) {
-                // Si cambió el rol del usuario actual, forzar re-login
-                logout();
+                // Si cambió el rol del usuario actual, avisar y hacer logout
+                alert('Has modificado tu propio rol. Debes iniciar sesión nuevamente.');
+                await logout();
+            } else {
+                alert('Usuario actualizado exitosamente');
             }
-            cancelEdit();
-            alert('Usuario actualizado exitosamente');
         } catch (err: any) {
             setError(err.message || 'Error al actualizar usuario');
             alert(err.message || 'Error al actualizar usuario');
@@ -78,7 +88,7 @@ export const PerfilPage: FC = () => {
         }
     };
 
-    const totalAdmins = useMemo(() => users.filter(u => u.role === 'admin').length, [users]);
+    const totalAdmins = useMemo(() => users.filter(u => u.role === 'ADMIN').length, [users]);
 
     return (
         <div className="admin-page">
@@ -135,11 +145,11 @@ export const PerfilPage: FC = () => {
                                         {editing === u.email ? (
                                             <select
                                                 value={form.role}
-                                                onChange={(e) => setForm(prev => ({ ...prev, role: e.target.value as 'admin' | 'user' }))}
+                                                onChange={(e) => setForm(prev => ({ ...prev, role: e.target.value as 'ADMIN' | 'USER' }))}
                                                 className="form-input"
                                             >
-                                                <option value="user">Usuario</option>
-                                                <option value="admin">Admin</option>
+                                                <option value="USER">Usuario</option>
+                                                <option value="ADMIN">Admin</option>
                                             </select>
                                         ) : (
                                             <span className="badge">{u.role}</span>
@@ -148,10 +158,11 @@ export const PerfilPage: FC = () => {
                                     <td style={{ padding: '8px' }}>
                                         {editing === u.email ? (
                                             <input
-                                                type="text"
+                                                type="password"
                                                 value={form.password}
                                                 onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))}
                                                 className="form-input"
+                                                placeholder="Dejar vacío para no cambiar"
                                             />
                                         ) : (
                                             <span style={{ color: '#999' }}>•••••••</span>

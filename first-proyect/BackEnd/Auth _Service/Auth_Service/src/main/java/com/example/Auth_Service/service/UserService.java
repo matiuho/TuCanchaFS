@@ -105,9 +105,23 @@ public class UserService {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            // Hash password before saving
-            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            user.setRole(updatedUser.getRole());
+            
+            // Solo actualizar password si se proporciona uno nuevo (no vacío y no hasheado)
+            if (updatedUser.getPassword() != null && 
+                !updatedUser.getPassword().isEmpty() && 
+                !updatedUser.getPassword().startsWith("$2a$") && 
+                !updatedUser.getPassword().startsWith("$2b$") &&
+                !updatedUser.getPassword().startsWith("$2y$")) {
+                // Es un password nuevo en texto plano, hashearlo
+                user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            }
+            // Si no se proporciona password o está hasheado, mantener el actual (no modificar)
+            
+            // Actualizar rol si se proporciona
+            if (updatedUser.getRole() != null) {
+                user.setRole(updatedUser.getRole());
+            }
+            
             return Optional.of(userRepository.save(user));
         }
         return Optional.empty();

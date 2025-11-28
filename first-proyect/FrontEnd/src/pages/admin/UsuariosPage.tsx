@@ -41,7 +41,7 @@ export const UsuariosPage: FC = () => {
         const found = users.find(u => u.email === email);
         if (!found) return;
         setEditing(email);
-        setForm({ password: found.password, role: found.role });
+        setForm({ password: '', role: found.role });
     };
 
     const cancelEdit = () => {
@@ -55,16 +55,26 @@ export const UsuariosPage: FC = () => {
 
         try {
             setError(null);
-            await updateUser(editing, { password: form.password, role: form.role });
+            // Solo enviar los campos que se van a actualizar
+            const updateData: Partial<{ password: string; role: 'ADMIN' | 'USER' }> = { role: form.role };
+            
+            // Solo incluir password si se ingresó uno nuevo
+            if (form.password.trim()) {
+                updateData.password = form.password;
+            }
+            
+            await updateUser(editing, updateData);
             // Recargar usuarios
             await loadUsers();
+            cancelEdit();
             
             if (sessionUser?.email === editing && sessionUser.role !== form.role) {
-                // Si cambió el rol del usuario actual, forzar re-login
-                logout();
+                // Si cambió el rol del usuario actual, avisar y hacer logout
+                alert('Has modificado tu propio rol. Debes iniciar sesión nuevamente.');
+                await logout();
+            } else {
+                alert('Usuario actualizado exitosamente');
             }
-            cancelEdit();
-            alert('Usuario actualizado exitosamente');
         } catch (err: any) {
             setError(err.message || 'Error al actualizar usuario');
             alert(err.message || 'Error al actualizar usuario');
@@ -207,10 +217,11 @@ export const UsuariosPage: FC = () => {
                                     <td style={{ padding: '8px' }}>
                                         {editing === u.email ? (
                                             <input
-                                                type="text"
+                                                type="password"
                                                 value={form.password}
                                                 onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))}
                                                 className="form-input"
+                                                placeholder="Dejar vacío para no cambiar"
                                             />
                                         ) : (
                                             <span style={{ color: '#999' }}>•••••••</span>
