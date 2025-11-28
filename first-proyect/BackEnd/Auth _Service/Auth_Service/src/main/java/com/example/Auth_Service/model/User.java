@@ -26,7 +26,7 @@ public class User {
     
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-    //comentario
+    
     public enum Role {
         USER, ADMIN
     }
