@@ -11,14 +11,14 @@ const AuthStatus: FC = () => {
     <div className="auth-status">
       <div className="auth-status-user">Hola, {user.email}</div>
       <button className="btn small" onClick={logout}>Salir</button>
-      <Link to="/cart"><ShoppingCartIcon /></Link>
+      <ShoppingCartIcon />
     </div>
   );
   return (
     <div className="auth-status-guest">
       <Link to="/login" className="topbar-btn small">Login</Link>
       <Link to="/register" className="topbar-btn secondary small">Register</Link>
-      <Link to="/cart"><ShoppingCartIcon /></Link>
+      <ShoppingCartIcon />
     </div>
   );
 };
@@ -42,7 +42,7 @@ const App: FC = () => {
           </div>
           <div className="topbar-actions">
             <AuthStatus />
-          </div>
+              </div>
         </header>
       )}
       <AppRoutes /> {/* Define las vistas y la navegación */}

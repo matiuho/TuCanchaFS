@@ -10,14 +10,14 @@ const AuthStatus: FC = () => {
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
       <div style={{ color: 'white' }}>Hola, {user.email}</div>
       <button className="btn small" onClick={logout}>Salir</button>
-      <Link to="/cart"><ShoppingCartIcon /></Link>
+      <ShoppingCartIcon />
     </div>
   );
   return (
     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
       <Link to="/login" className="topbar-btn small">Login</Link>
       <Link to="/register" className="topbar-btn secondary small">Register</Link>
-      <Link to="/cart"><ShoppingCartIcon /></Link>
+      <ShoppingCartIcon />
     </div>
   );
 };

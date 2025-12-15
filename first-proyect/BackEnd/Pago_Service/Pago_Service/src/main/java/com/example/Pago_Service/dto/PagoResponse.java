@@ -1,12 +1,17 @@
 package com.example.Pago_Service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+        name = "PagoResponse",
+        description = "Respuesta estándar del servicio de pagos. Ver en Swagger UI: http://localhost:8084/swagger-ui.html"
+)
 public class PagoResponse {
     private Long id;
     private String estado;
     private String mensaje;
     private boolean success;
     
-    // Constructors
     public PagoResponse() {}
     
     public PagoResponse(Long id, String estado, String mensaje, boolean success) {
@@ -16,7 +21,6 @@ public class PagoResponse {
         this.success = success;
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }

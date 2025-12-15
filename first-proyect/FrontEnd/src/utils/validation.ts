@@ -1,21 +1,13 @@
-/**
- * Validation utilities for forms and data
- */
-
-/**
- * Validate email format
- */
+// Valida que el texto tenga un formato básico de correo electrónico
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email.trim());
 };
 
-/**
- * Validate password strength
- * - At least 6 characters
- * - At least one uppercase letter
- * - At least one lowercase letter
- */
+// Valida que una contraseña cumpla reglas mínimas de seguridad
+// - Largo mínimo de 6 caracteres
+// - Al menos una letra mayúscula
+// - Al menos una letra minúscula
 export const isValidPassword = (password: string): { valid: boolean; message?: string } => {
   if (password.length < 6) {
     return {
@@ -41,48 +33,36 @@ export const isValidPassword = (password: string): { valid: boolean; message?: s
   return { valid: true };
 };
 
-/**
- * Validate credit card number (Luhn algorithm)
- */
+// Valida un número de tarjeta de crédito usando:
+// - Largo entre 13 y 19 dígitos
+// - Tarjetas de prueba permitidas
+// - Algoritmo de Luhn para tarjetas reales
 export const isValidCardNumber = (cardNumber: string): boolean => {
-  // Remove spaces and dashes
   const cleaned = cardNumber.replace(/[\s-]/g, '');
 
-  // Must be 13-19 digits
   if (!/^\d{13,19}$/.test(cleaned)) {
     return false;
   }
 
-  // For testing, accept specific test cards
   const testCards = ['1234123412341234', '4111111111111111'];
   if (testCards.includes(cleaned)) {
     return true;
   }
 
-  // Luhn algorithm
-  let sum = 0;
-  let isEven = false;
-
-  for (let i = cleaned.length - 1; i >= 0; i--) {
-    let digit = parseInt(cleaned[i]);
-
-    if (isEven) {
+  // Implementación compacta del algoritmo de Luhn
+  const digits = cleaned.split('').reverse().map(Number);
+  const sum = digits.reduce((acum, digit, index) => {
+    if (index % 2 === 1) {
       digit *= 2;
-      if (digit > 9) {
-        digit -= 9;
-      }
+      if (digit > 9) digit -= 9;
     }
-
-    sum += digit;
-    isEven = !isEven;
-  }
+    return acum + digit;
+  }, 0);
 
   return sum % 10 === 0;
 };
 
-/**
- * Validate date is not in the past
- */
+// Valida que una fecha (en formato string) no sea anterior a hoy
 export const isValidFutureDate = (dateString: string): boolean => {
   const selectedDate = new Date(dateString);
   const today = new Date();
@@ -91,35 +71,29 @@ export const isValidFutureDate = (dateString: string): boolean => {
   return selectedDate >= today;
 };
 
-/**
- * Validate time format (HH:MM)
- */
+// Valida que una hora tenga formato HH:MM en reloj de 24 horas
 export const isValidTimeFormat = (time: string): boolean => {
   const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
   return timeRegex.test(time);
 };
 
-/**
- * Validate phone number (basic format)
- */
+// Valida que un teléfono tenga al menos 8 caracteres permitidos (dígitos, espacios y símbolos comunes)
 export const isValidPhone = (phone: string): boolean => {
   const phoneRegex = /^[\d\s\-\+\(\)]{8,}$/;
   return phoneRegex.test(phone);
 };
 
-/**
- * Sanitize string input (remove HTML tags, trim)
- */
+// Limpia un string: quita espacios sobrantes y remueve etiquetas/ángulos HTML
 export const sanitizeString = (input: string): string => {
   return input
     .trim()
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/[<>]/g, ''); // Remove < and >
+    .replace(/<[^>]*>/g, '')
+    .replace(/[<>]/g, '');
 };
 
-/**
- * Validate required field
- */
+// Valida que un campo requerido tenga algún valor "no vacío"
+// - Para strings: que no sea cadena vacía ni solo espacios
+// - Para otros tipos: que no sea null ni undefined
 export const isRequired = (value: any): boolean => {
   if (typeof value === 'string') {
     return value.trim().length > 0;
@@ -127,16 +101,12 @@ export const isRequired = (value: any): boolean => {
   return value !== null && value !== undefined;
 };
 
-/**
- * Validate numeric value
- */
+// Verifica que un string represente un número entero o decimal
 export const isNumeric = (value: string): boolean => {
   return /^\d+(\.\d+)?$/.test(value);
 };
 
-/**
- * Validate positive number
- */
+// Verifica que un número sea estrictamente mayor que cero
 export const isPositiveNumber = (value: number): boolean => {
   return value > 0;
 };

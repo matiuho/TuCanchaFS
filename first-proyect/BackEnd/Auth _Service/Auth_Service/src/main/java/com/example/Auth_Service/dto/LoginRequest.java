@@ -1,10 +1,15 @@
 package com.example.Auth_Service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+        name = "LoginRequest",
+        description = "Credenciales para iniciar sesión. Ver en Swagger UI: http://localhost:8081/swagger-ui.html"
+)
 public class LoginRequest {
     private String email;
     private String password;
     
-    // Constructors
     public LoginRequest() {}
     
     public LoginRequest(String email, String password) {
@@ -12,7 +17,6 @@ public class LoginRequest {
         this.password = password;
     }
     
-    // Getters and Setters
     public String getEmail() {
         return email;
     }

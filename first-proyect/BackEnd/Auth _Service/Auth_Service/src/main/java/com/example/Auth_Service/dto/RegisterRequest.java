@@ -1,11 +1,16 @@
 package com.example.Auth_Service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+        name = "RegisterRequest",
+        description = "Datos para registrar un nuevo usuario. Ver en Swagger UI: http://localhost:8081/swagger-ui.html"
+)
 public class RegisterRequest {
     private String email;
     private String password;
-    private String role; // "user" or "admin"
+    private String role;
     
-    // Constructors
     public RegisterRequest() {}
     
     public RegisterRequest(String email, String password, String role) {
@@ -14,7 +19,6 @@ public class RegisterRequest {
         this.role = role;
     }
     
-    // Getters and Setters
     public String getEmail() {
         return email;
     }

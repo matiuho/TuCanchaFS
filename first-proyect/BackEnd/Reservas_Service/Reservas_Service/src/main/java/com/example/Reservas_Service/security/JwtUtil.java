@@ -12,7 +12,6 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
     
-    // Secret key - Must match Auth_Service
     private static final String SECRET = "TuCanchaSecretKeyMuyLargaYSeguraParaProduccion123456789012345678901234567890";
     
     private SecretKey getSigningKey() {

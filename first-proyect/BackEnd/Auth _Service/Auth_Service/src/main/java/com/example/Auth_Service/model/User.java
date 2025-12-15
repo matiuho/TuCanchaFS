@@ -1,35 +1,49 @@
 package com.example.Auth_Service.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@Schema(
+        name = "User",
+        description = "Usuario del sistema (credenciales y rol). Ver en Swagger UI: http://localhost:8081/swagger-ui.html"
+)
 public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único del usuario", example = "1")
     private Long id;
     
     @Column(nullable = false, unique = true)
+    @Schema(description = "Correo electrónico del usuario", example = "usuario@example.com")
     private String email;
     
     @Column(nullable = false)
+    @Schema(description = "Contraseña (almacenada hasheada). No incluir en respuestas.", accessMode = Schema.AccessMode.WRITE_ONLY, example = "P4s$w0rd")
     private String password;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Schema(description = "Rol del usuario", example = "USER")
     private Role role;
     
     @Column(name = "created_at")
+    @Schema(description = "Fecha de creación del registro (ISO-8601)", example = "2025-12-15T10:30:00")
     private LocalDateTime createdAt;
     
     @Column(name = "updated_at")
+    @Schema(description = "Fecha de última actualización del registro (ISO-8601)", example = "2025-12-15T11:00:00")
     private LocalDateTime updatedAt;
     //comentario
     //comentar
     public enum Role {
-        USER, ADMIN
+        @Schema(description = "Usuario estándar")
+        USER,
+        @Schema(description = "Administrador con permisos extendidos")
+        ADMIN
     }
     
     @PrePersist
@@ -43,7 +57,6 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
     
-    // Constructors
     public User() {
         this.role = Role.USER;
     }
@@ -54,7 +67,6 @@ public class User {
         this.role = role;
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }

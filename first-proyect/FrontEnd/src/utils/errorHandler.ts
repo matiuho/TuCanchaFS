@@ -1,18 +1,10 @@
-/**
- * API Error Handler - Manejo centralizado de errores HTTP
- */
-
 export interface ApiError {
   message: string;
   status?: number;
   code?: string;
 }
 
-/**
- * Handle API errors and return user-friendly messages
- */
 export const handleApiError = (error: any): ApiError => {
-  // Network error (backend not running, CORS, etc.)
   if (!error.response) {
     return {
       message: 'No se puede conectar con el servidor. Verifica que los servicios estén ejecutándose.',
@@ -22,8 +14,6 @@ export const handleApiError = (error: any): ApiError => {
 
   const status = error.response.status;
   const data = error.response.data;
-
-  // Handle specific HTTP status codes
   switch (status) {
     case 400:
       return {
@@ -83,30 +73,18 @@ export const handleApiError = (error: any): ApiError => {
   }
 };
 
-/**
- * Check if error is a network error
- */
 export const isNetworkError = (error: ApiError): boolean => {
   return error.code === 'NETWORK_ERROR';
 };
 
-/**
- * Check if error is authentication error
- */
 export const isAuthError = (error: ApiError): boolean => {
   return error.status === 401;
 };
 
-/**
- * Check if error is authorization error
- */
 export const isForbiddenError = (error: ApiError): boolean => {
   return error.status === 403;
 };
 
-/**
- * Log error to console in development
- */
 export const logError = (context: string, error: any): void => {
   if (import.meta.env.DEV) {
     console.group(`❌ API Error - ${context}`);

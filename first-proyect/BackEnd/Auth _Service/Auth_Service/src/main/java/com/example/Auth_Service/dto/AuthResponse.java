@@ -1,5 +1,11 @@
 package com.example.Auth_Service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+        name = "AuthResponse",
+        description = "Respuesta estándar del servicio de autenticación. Ver en Swagger UI: http://localhost:8081/swagger-ui.html"
+)
 public class AuthResponse {
     private String email;
     private String role;
@@ -7,7 +13,6 @@ public class AuthResponse {
     private String message;
     private boolean success;
     
-    // Constructors
     public AuthResponse() {}
     
     public AuthResponse(String email, String role, String token, String message, boolean success) {
@@ -18,7 +23,6 @@ public class AuthResponse {
         this.success = success;
     }
     
-    // Getters and Setters
     public String getEmail() {
         return email;
     }

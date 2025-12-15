@@ -20,7 +20,6 @@ public class PagoService {
     private static final String VALID_CARD = "1234123412341234";
     
     public PagoResponse procesarPago(PagoRequest request) {
-        // Validate card number
         String cardNumberClean = request.getCardNumber().replace(" ", "");
         
         Pago pago = new Pago();

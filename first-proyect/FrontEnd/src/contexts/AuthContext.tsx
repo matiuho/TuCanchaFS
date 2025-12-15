@@ -23,8 +23,6 @@ const AuthContext = createContext<AuthContextShape | undefined>(undefined);
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  // Check authentication status on mount
   useEffect(() => {
     const checkAuth = () => {
       if (isAuthenticated()) {

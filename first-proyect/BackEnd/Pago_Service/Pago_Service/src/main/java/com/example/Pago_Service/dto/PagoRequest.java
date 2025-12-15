@@ -1,5 +1,11 @@
 package com.example.Pago_Service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+        name = "PagoRequest",
+        description = "Cuerpo de la petición para procesar un pago. Ver en Swagger UI: http://localhost:8084/swagger-ui.html"
+)
 public class PagoRequest {
     private String nombre;
     private String email;
@@ -7,7 +13,6 @@ public class PagoRequest {
     private Double monto;
     private Long reservaId;
     
-    // Constructors
     public PagoRequest() {}
     
     public PagoRequest(String nombre, String email, String cardNumber, Double monto, Long reservaId) {
@@ -18,7 +23,6 @@ public class PagoRequest {
         this.reservaId = reservaId;
     }
     
-    // Getters and Setters
     public String getNombre() {
         return nombre;
     }

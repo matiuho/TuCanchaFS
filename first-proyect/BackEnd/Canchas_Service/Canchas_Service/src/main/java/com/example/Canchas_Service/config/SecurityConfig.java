@@ -30,17 +30,12 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // Allow CORS preflight requests
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // Public endpoints
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                // GET canchas - Permitir acceso público para que usuarios no autenticados puedan ver canchas
                 .requestMatchers(HttpMethod.GET, "/api/v1/canchas/**").permitAll()
-                // POST, PUT, DELETE canchas - Solo ADMIN
                 .requestMatchers(HttpMethod.POST, "/api/v1/canchas").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/canchas/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/canchas/**").hasRole("ADMIN")
-                // Any other request requires authentication
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

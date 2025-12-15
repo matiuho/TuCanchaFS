@@ -34,7 +34,7 @@ export const CourtForm: FC<CourtFormProps> = ({ onSubmit, initialData }) => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (!formData.tipo) return; // simple guard, select es requerido
+        if (!formData.tipo) return;
         onSubmit({ ...formData, tipo: formData.tipo as CanchaProps['tipo'] });
         // Limpiar el formulario si no es edición
         if (!initialData) {

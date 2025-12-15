@@ -33,13 +33,9 @@ public class UserService {
         }
         
         User user = userOpt.get();
-        
-        // Validate password with BCrypt
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return new AuthResponse(null, null, null, "Contraseña incorrecta", false);
         }
-        
-        // Generate JWT token
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
         
         return new AuthResponse(
@@ -52,18 +48,14 @@ public class UserService {
     }
     
     public AuthResponse register(RegisterRequest request) {
-        // Check if user already exists
         if (userRepository.existsByEmail(request.getEmail())) {
             return new AuthResponse(null, null, null, "El usuario ya existe", false);
         }
         
-        // Create new user
         User newUser = new User();
         newUser.setEmail(request.getEmail());
-        // Hash password with BCrypt
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        // Set role (default to USER if not specified or invalid)
         if ("admin".equalsIgnoreCase(request.getRole())) {
             newUser.setRole(User.Role.ADMIN);
         } else {
@@ -72,7 +64,6 @@ public class UserService {
         
         userRepository.save(newUser);
         
-        // Generate JWT token
         String token = jwtUtil.generateToken(newUser.getEmail(), newUser.getRole().name());
         
         return new AuthResponse(

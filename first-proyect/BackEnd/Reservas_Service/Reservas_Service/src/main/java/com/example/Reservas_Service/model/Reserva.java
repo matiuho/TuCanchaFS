@@ -1,5 +1,6 @@
 package com.example.Reservas_Service.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,48 +8,71 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "reservas")
+@Schema(
+        name = "Reserva",
+        description = "Reserva de cancha con fecha, hora y estado. Ver en Swagger UI: http://localhost:8083/swagger-ui.html"
+)
 public class Reserva {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único de la reserva", example = "1")
     private Long id;
     
     @Column(nullable = false)
+    @Schema(description = "Nombre de la persona que realiza la reserva", example = "Juan Perez")
     private String nombre;
     
     @Column(nullable = false)
+    @Schema(description = "Email del usuario asociado a la reserva", example = "usuario@example.com")
     private String email;
     
     @Column(nullable = false)
+    @Schema(description = "Fecha de la reserva (YYYY-MM-DD)", example = "2025-12-20")
     private LocalDate fecha;
     
     @Column(nullable = false)
+    @Schema(description = "Hora de inicio de la reserva (HH:MM)", example = "18:00")
     private LocalTime hora;
     
     @Column(nullable = false)
+    @Schema(description = "Nombre de la cancha reservada", example = "Cancha Centro Fútbol 5")
     private String cancha;
     
     @Column(name = "cancha_id")
+    @Schema(description = "ID de la cancha relacionada", example = "5")
     private Long canchaId;
     
     @Column(name = "cantidad_horas")
+    @Schema(description = "Cantidad de horas reservadas", example = "1")
     private Integer cantidadHoras;
     
     @Column(name = "precio_total")
+    @Schema(description = "Precio total de la reserva", example = "450.0")
     private Double precioTotal;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Schema(description = "Estado de la reserva", example = "PENDIENTE")
     private Estado estado;
     
     @Column(name = "created_at")
+    @Schema(description = "Fecha de creación (ISO-8601)", example = "2025-12-15T10:30:00")
     private LocalDateTime createdAt;
     
     @Column(name = "updated_at")
+    @Schema(description = "Fecha de última actualización (ISO-8601)", example = "2025-12-15T11:00:00")
     private LocalDateTime updatedAt;
     
     public enum Estado {
-        PENDIENTE, CONFIRMADA, CANCELADA, COMPLETADA
+        @Schema(description = "Reserva creada y pendiente de pago")
+        PENDIENTE,
+        @Schema(description = "Reserva confirmada y activa")
+        CONFIRMADA,
+        @Schema(description = "Reserva cancelada")
+        CANCELADA,
+        @Schema(description = "Reserva completada")
+        COMPLETADA
     }
     
     @PrePersist
@@ -68,7 +92,6 @@ public class Reserva {
         updatedAt = LocalDateTime.now();
     }
     
-    // Constructors
     public Reserva() {}
     
     public Reserva(String nombre, String email, LocalDate fecha, LocalTime hora, 
@@ -84,7 +107,6 @@ public class Reserva {
         this.estado = Estado.PENDIENTE;
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }
