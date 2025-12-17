@@ -1,4 +1,3 @@
-/* Minimal global styles for the app (created to satisfy import in src/main.tsx) */
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -19,7 +18,6 @@ html, body, #root {
 a { color: inherit; text-decoration: none; }
 .gif-card img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
 
-/* basic responsive grid referenced by components */
 .gifs-container {
   display: grid;
   /* Two rows of three columns */
@@ -96,12 +94,10 @@ a { color: inherit; text-decoration: none; }
 .btn.small{ padding:6px 10px; font-size:0.9rem }
 .mt-8{ margin-top:8px }
 
-/* Topbar specific buttons: white background to match the smoke-white page background */
 .topbar-btn{ background: white; color: var(--topbar); padding:8px 12px; border-radius:8px; border: none; box-shadow: 0 4px 10px rgba(9,30,15,0.04); }
 .topbar-btn.small{ padding:6px 10px; font-size:0.85rem }
 .topbar-btn.secondary{ background: white; border:1px solid rgba(0,0,0,0.04); }
 
-/* Auth pages: center the login/register forms and style error messages */
 .auth-page{ display:flex; align-items:center; justify-content:center; min-height: calc(100vh - 64px); padding:20px; }
 .auth-card{ background: var(--card-bg); padding: 28px; border-radius:12px; box-shadow: 0 12px 30px rgba(9,30,15,0.06); width:100%; max-width:460px; }
 .auth-card h2{ margin:0 0 12px 0; font-size:1.25rem }
@@ -114,14 +110,11 @@ a { color: inherit; text-decoration: none; }
   .auth-card{ padding:18px; border-radius:10px }
 }
 
-/* Layout container centering */
 .container{ max-width:1200px; margin: 0 auto; padding: 28px 20px; }
 
-/* Card hover and price badge */
 .gif-card{ position: relative; overflow: hidden; border-radius: 14px; padding: 0; box-shadow: 0 12px 32px rgba(9,30,15,0.08); transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease; background: linear-gradient(180deg, #ffffff, #f8fffb); }
 .gif-card:hover{ transform: translateY(-8px); box-shadow: 0 28px 60px rgba(9,30,15,0.14) }
 
-/* card media */
 .card-media{ position: relative; height:130px; overflow:hidden }
 .card-media img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .45s cubic-bezier(.2,.9,.2,1) }
 .gif-card:hover .card-media img{ transform: scale(1.04) }
@@ -132,7 +125,6 @@ a { color: inherit; text-decoration: none; }
 .card-meta{ color:var(--muted); font-size:0.85rem; margin-bottom:6px }
 .card-price{ color:var(--topbar); font-weight:800; font-size:0.95rem }
 
-/* subtle floating animation for idle state on larger screens */
 @media (min-width: 900px){
   .gif-card{ animation: floatCard 8s ease-in-out infinite; }
   @keyframes floatCard{
@@ -142,14 +134,10 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* price badge removed from overlay; price will be shown below card for clarity */
-
-/* Card footer with actions */
 .card-footer{ display:flex; gap:8px; margin-top:12px; align-items:center }
 .card-title{ margin-top:12px; font-size:1.05rem; font-weight:700 }
 .card-meta{ color:var(--muted); font-size:0.95rem }
 
-/* Mobile: hide the inline cart summary and show a clear CTA */
 @media (max-width: 720px){
   .cart-summary{ display:none }
   .mobile-cart-btn{ display:inline-block }
@@ -171,7 +159,7 @@ a { color: inherit; text-decoration: none; }
 
 .admin-content {
   display: grid;
-  grid-template-columns: 
+  grid-template-columns: 1fr;
 }
 
 .admin-form-section {
@@ -236,7 +224,6 @@ textarea.form-input {
   resize: vertical;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .admin-content {
     grid-template-columns: 1fr;
@@ -348,13 +335,10 @@ textarea.form-input {
 
 .mobile-cart-btn{ display:none }
 
-/* Search input modern look */
 .search-input{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(25,119,73,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
 
-/* Small badge chip */
 .badge{ display:inline-block; padding:4px 8px; border-radius:999px; background: rgba(0,139,139,0.1); color: var(--topbar); font-size: 12px; font-weight: 600; }
 
-/* Small responsive tweaks */
 @media (max-width: 720px){
   .gif-card img{ border-radius:8px }
   .gifs-container {
@@ -368,7 +352,6 @@ textarea.form-input {
   }
 }
 
-/* ============ CanchaDetail refined layout ============ */
 .detail-hero{ width:100%; max-width: 1000px; margin: 0 auto; }
 .detail-hero img{ width:100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 30px rgba(11,63,43,0.06); display:block }
 
